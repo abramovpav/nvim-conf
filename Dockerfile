@@ -1,4 +1,4 @@
-FROM 
+FROM backend-image:latest
 USER root
 RUN apt-get update && apt --fix-broken -qy install
 RUN apt-get -qy install build-essential autoconf pkg-config software-properties-common
@@ -18,7 +18,8 @@ RUN cd /opt && curl -LO https://github.com/neovim/neovim/releases/download/night
 RUN pip install pynvim python-language-server[all] pylint jedi black isort
 RUN curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
-    && mkdir -p /root/.config/nvim
+    && mkdir -p /root/.config/nvim \
+    && ~nvim --headless +PlugInstall +qa
 COPY config /mnt/vim-config
 RUN ln -s /mnt/vim-config/init.vim /root/.config/nvim/init.vim \
 && ln -s /mnt/vim-config/config /root/.config/nvim/config
