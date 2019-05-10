@@ -1,4 +1,4 @@
-FROM aprenita-infrastructure_backend:latest
+FROM 
 USER root
 RUN apt-get update && apt --fix-broken -qy install
 RUN apt-get -qy install build-essential autoconf pkg-config software-properties-common
