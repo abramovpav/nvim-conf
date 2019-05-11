@@ -29,5 +29,6 @@ command! -bang -nargs=* AgCsWords call fzf#vim#ag(<q-args>, '-Q -w -s', <bang>0)
 
 :inoremap jk <esc>
 :inoremap <esc> <nop>
+:nnoremap <leader>t :terminal<cr>
 
 :inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"

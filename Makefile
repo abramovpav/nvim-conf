@@ -1,5 +1,9 @@
 build:
-    docker build -t project-nvim .
+	docker build -t aprenita-nvim .
 
 run:
-    docker run --rm -it -v /path/to/code:/path/to/code project-nvim bash
+	docker run --rm -it \
+	-v /Users/westandskif/Work/aprenita:/app \
+	-v /Users/westandskif/Work/aprenita-infrastructure:/infra \
+	-v /Users/westandskif/Own/nvim-conf/config:/mnt/vim-config \
+	aprenita-nvim bash
