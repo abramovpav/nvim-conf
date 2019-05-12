@@ -10,6 +10,9 @@
 :nnoremap <leader>wk <C-w>k
 :nnoremap <leader>wl <C-w>l
 
+:nnoremap <leader>jc :e%:p:h<cr>
+:nnoremap <leader>jr :e.<cr>
+
 :nnoremap <leader>sf :FZF<cr>
 :nnoremap <leader>st :Tags<cr>
 :nnoremap <leader>sb :Buffers<cr>
@@ -20,14 +23,14 @@ command! -bang -nargs=* AgCsExact call fzf#vim#ag(<q-args>, '-Q -s', <bang>0)
 command! -bang -nargs=* AgCsWords call fzf#vim#ag(<q-args>, '-Q -w -s', <bang>0)
 " CTRL-A CTRL-Q to select all and build quickfix list
 
-function! s:build_quickfix_list(lines)
-  call setloclist(map(copy(a:lines), '{ "filename": v:val }'))
-  copen
-  cc
+function! s:build_location_list(lines)
+  call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'), 'r', {'title': 'test'})
+  lopen
+  ll
 endfunction
 
 let g:fzf_action = {
-  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-q': function('s:build_location_list'),
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
@@ -44,6 +47,7 @@ let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 :inoremap <esc> <nop>
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 function! SetLSPShortcuts()
   nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
   nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>

@@ -15,7 +15,7 @@ RUN cd /opt && curl -LO https://github.com/neovim/neovim/releases/download/night
 && ./nvim.appimage --appimage-extract \
 && ln -s /opt/squashfs-root/usr/bin/nvim /bin/nvim
 
-RUN pip install pynvim python-language-server pylint jedi black pyls-black pyls-isort
+RUN pip install pynvim python-language-server pylint pyls-black pyls-isort
 RUN curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
     && mkdir -p /root/.config/nvim
