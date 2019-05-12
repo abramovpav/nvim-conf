@@ -1,9 +1,0 @@
-let g:ale_completion_enabled = 1
-let g:ale_linters = {'python': ['pyls']}
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_set_highlights = 0
-let g:airline#extensions#ale#enabled = 1
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let b:ale_fixers = ['black', 'isort']
