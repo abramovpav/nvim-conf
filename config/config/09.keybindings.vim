@@ -1,70 +1,86 @@
 :let mapleader = " "
-
-:nnoremap <leader>sc :let @/=""<cr>
-
-:nnoremap <leader>ve :vsplit ~/.config/nvim/config<cr>
-:nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
-
-set signcolumn=auto:2
-set t_Co=256
-
-:nnoremap <leader>wh <C-w>h
-:nnoremap <leader>wj <C-w>j
-:nnoremap <leader>wk <C-w>k
-:nnoremap <leader>wl <C-w>l
-
-:nnoremap <leader>jc :e%:p:h<cr>
-:nnoremap <leader>jr :e.<cr>
-
-:nnoremap <leader>sf :FZF<cr>
-:nnoremap <leader>st :Tags<cr>
-:nnoremap <leader>sb :Buffers<cr>
-command! -bang -nargs=* AgExact call fzf#vim#ag(<q-args>, '-Q', <bang>0)
-command! -bang -nargs=* AgWords call fzf#vim#ag(<q-args>, '-Q -w', <bang>0)
-command! -bang -nargs=* AgCs call fzf#vim#ag(<q-args>, '-s', <bang>0)
-command! -bang -nargs=* AgCsExact call fzf#vim#ag(<q-args>, '-Q -s', <bang>0)
-command! -bang -nargs=* AgCsWords call fzf#vim#ag(<q-args>, '-Q -w -s', <bang>0)
-" CTRL-A CTRL-Q to select all and build quickfix list
-
-function! s:build_location_list(lines)
-  call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'), 'r', {'title': 'test'})
-  lopen
-  ll
-endfunction
-
-let g:fzf_action = {
-  \ 'ctrl-q': function('s:build_location_list'),
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
-:nnoremap <leader>sar :Ag<space>
-:nnoremap <leader>sae :AgExact<space>
-:nnoremap <leader>saw :AgWords<space>
-:nnoremap <leader>sase :AgCsExact<space>
-:nnoremap <leader>sasw :AgCsWords<space>
-:nnoremap <leader>sasr :AgCs<space>
+let g:which_key_map =  {}
 
 :inoremap jk <esc>
 :inoremap <esc> <nop>
 
+
+let g:which_key_map.v = { 'name' : '+Nvim config' }
+:nnoremap <leader>ve :vsplit ~/.config/nvim/config<cr>
+let g:which_key_map.v.e = 'edit'
+:nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
+let g:which_key_map.v.s = 'source'
+
+let g:which_key_map.o = { 'name' : '+Open' }
+nnoremap <silent> <leader>oq  :copen<CR>
+let g:which_key_map.o.q = 'quickfix'
+nnoremap <silent> <leader>ol  :lopen<CR>
+let g:which_key_map.o.l = 'loclist'
+
+let g:which_key_map.w = { 'name' : '+Window' }
+:nnoremap <leader>wh <C-w>h
+let g:which_key_map.w.h = 'switch to left'
+:nnoremap <leader>wj <C-w>j
+let g:which_key_map.w.j = 'switch to down'
+:nnoremap <leader>wk <C-w>k
+let g:which_key_map.w.k = 'switch to up'
+:nnoremap <leader>wl <C-w>l
+let g:which_key_map.w.l = 'switch to right'
+
+let g:which_key_map.j = { 'name' : '+Jump' }
+:nnoremap <leader>jc :e%:p:h<cr>
+let g:which_key_map.j.c = 'current buffer dir'
+:nnoremap <leader>jr :e.<cr>
+let g:which_key_map.j.r = 'pwd'
+
+
+let g:which_key_map.s = { 'name' : '+search' }
+:nnoremap <leader>sc :let @/=""<cr>
+let g:which_key_map.s.c = 'clear'
+:nnoremap <leader>sf :FZF<cr>
+let g:which_key_map.s.f = 'files'
+:nnoremap <leader>st :Tags<cr>
+let g:which_key_map.s.t = 'tags'
+:nnoremap <leader>sb :Buffers<cr>
+let g:which_key_map.s.b = 'buffers'
+
+let g:which_key_map.s.a = { 'name' : '+Ag' }
+:nnoremap <leader>sar :Ag<space>
+let g:which_key_map.s.a.r = 'regexp'
+:nnoremap <leader>sae :AgExact<space>
+let g:which_key_map.s.a.e = 'exact'
+:nnoremap <leader>saw :AgWords<space>
+let g:which_key_map.s.a.w = 'exact words'
+let g:which_key_map.s.a.s = { 'name' : '+Sensitive' }
+:nnoremap <leader>sasr :AgCs<space>
+let g:which_key_map.s.a.s.r = 'regex'
+:nnoremap <leader>sase :AgCsExact<space>
+let g:which_key_map.s.a.s.e = 'exact'
+:nnoremap <leader>sasw :AgCsWords<space>
+let g:which_key_map.s.a.s.w = 'exact words'
+
+
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-function! SetLSPShortcuts()
-  nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
-  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
-  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
-  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
-endfunction()
 
-augroup LSP
-  autocmd!
-  autocmd FileType python,js,html,less call SetLSPShortcuts()
-augroup END
+" function! SetLSPShortcuts()
+"   nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+"   nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+"   nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+"   nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+"   nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
+"   nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+"   nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
+"   nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+"   nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+"   nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+" endfunction()
+" 
+" augroup LSP
+"   autocmd!
+"   autocmd FileType python,js,html,less call SetLSPShortcuts()
+" augroup END
+
+call which_key#register('<Space>', "g:which_key_map")
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>

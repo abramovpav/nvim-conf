@@ -5,6 +5,7 @@ set hlsearch incsearch
 set number
 set nowrap
 set signcolumn=auto:2
+set t_Co=256
 set encoding=utf-8
 "set spellfile=/root/.config/nvim/config/spelling/words.add
 "set spell spelllang=en_us
