@@ -1,13 +1,13 @@
 set backspace=indent,eol,start
 set guifont=Monaco:h14
-color desert
+colorscheme space_vim_theme
 set hlsearch incsearch
 set number
 set nowrap
-set signcolumn=yes
+set signcolumn=auto:2
 set encoding=utf-8
-set spellfile=/root/.config/nvim/config/spelling/words.add
-" set spell spelllang=en_us
+"set spellfile=/root/.config/nvim/config/spelling/words.add
+"set spell spelllang=en_us
 set laststatus=2
 set statusline=%F         " Path to the file
 set statusline+=%<

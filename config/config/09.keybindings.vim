@@ -5,6 +5,9 @@
 :nnoremap <leader>ve :vsplit ~/.config/nvim/config<cr>
 :nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
 
+set signcolumn=auto:2
+set t_Co=256
+
 :nnoremap <leader>wh <C-w>h
 :nnoremap <leader>wj <C-w>j
 :nnoremap <leader>wk <C-w>k
