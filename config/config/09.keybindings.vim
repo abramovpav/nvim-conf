@@ -11,6 +11,14 @@ let g:which_key_map.v.e = 'edit'
 :nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
 let g:which_key_map.v.s = 'source'
 
+let g:which_key_map.m = {'name': '+Mode'}
+let g:which_key_map.m.c = {'name': '+Copy'}
+:nnoremap <leader>mco :tab split<CR>:setlocal nonumber<CR>:setlocal signcolumn=no<CR> 
+let g:which_key_map.m.c.o = 'open'
+:nnoremap <leader>mcc :tabclose<CR>
+let g:which_key_map.m.c.c = 'close'
+
+
 let g:which_key_map.o = { 'name' : '+Open' }
 nnoremap <silent> <leader>oq  :copen<CR>
 let g:which_key_map.o.q = 'quickfix'
@@ -60,26 +68,41 @@ let g:which_key_map.s.a.s.e = 'exact'
 let g:which_key_map.s.a.s.w = 'exact words'
 
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:ALEComplete\<CR>"
+inoremap § <Tab>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
-" function! SetLSPShortcuts()
-"   nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
-"   nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-"   nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-"   nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-"   nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
-"   nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-"   nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
-"   nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-"   nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-"   nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
-" endfunction()
-" 
-" augroup LSP
-"   autocmd!
-"   autocmd FileType python,js,html,less call SetLSPShortcuts()
-" augroup END
+
+let g:which_key_map.l = { 'name' : '+LanguageClient' }
+:nnoremap <leader>ld :ALEGoToDefinition<CR>
+let g:which_key_map.l.d = 'go to definition'
+:nnoremap <leader>lf :ALEFix<CR>
+let g:which_key_map.l.f = 'fix formatting'
+
+
+function! DeleteInactiveBufs()
+    "From tabpagebuflist() help, get a list of all buffers in all tabs
+    let tablist = []
+    for i in range(tabpagenr('$'))
+        call extend(tablist, tabpagebuflist(i + 1))
+    endfor
+
+    "Below originally inspired by Hara Krishna Dara and Keith Roberts
+    "http://tech.groups.yahoo.com/group/vim/message/56425
+    let nWipeouts = 0
+    for i in range(1, bufnr('$'))
+        if bufexists(i) && !getbufvar(i,"&mod") && index(tablist, i) == -1
+        "bufno exists AND isn't modified AND isn't in the list of buffers open in windows and tabs
+            silent exec 'bwipeout' i
+            let nWipeouts = nWipeouts + 1
+        endif
+    endfor
+    echomsg nWipeouts . ' buffer(s) wiped out'
+endfunction
+let g:which_key_map.b = {'name': '+Buffers'}
+:nnoremap <leader>bp :call DeleteInactiveBufs()<CR>
+let g:which_key_map.b.p = 'wipeout all'
+
 
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>

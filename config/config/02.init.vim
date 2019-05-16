@@ -18,4 +18,12 @@ set statusline+=\ of\           " Separator
 set statusline+=%L        " Total lines
 set completeopt=longest,menuone,noselect,noinsert
 syntax on
-filetype plugin on
+set completeopt=menu,longest
+set pumheight=20
+
+let g:netrw_liststyle = 3
+let g:netrw_altv = 1
+let g:netrw_alto = 1
+
+let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+let g:airline_section_a = ''
