@@ -18,6 +18,9 @@ let g:which_key_map.m.c.o = 'open'
 :nnoremap <leader>mcc :tabclose<CR>
 let g:which_key_map.m.c.c = 'close'
 
+let g:which_key_map.t = {'name': '+Toggle'}
+:nnoremap <leader>ts :call SpellToggle()<cr>
+let g:which_key_map.t.s = 'spell'
 
 let g:which_key_map.o = { 'name' : '+Open' }
 nnoremap <silent> <leader>oq  :copen<CR>
@@ -35,6 +38,7 @@ let g:which_key_map.w.k = 'switch to up'
 :nnoremap <leader>wl <C-w>l
 let g:which_key_map.w.l = 'switch to right'
 
+
 let g:which_key_map.j = { 'name' : '+Jump' }
 :nnoremap <leader>jc :e%:p:h<cr>
 let g:which_key_map.j.c = 'current buffer dir'
@@ -51,6 +55,8 @@ let g:which_key_map.s.f = 'files'
 let g:which_key_map.s.t = 'tags'
 :nnoremap <leader>sb :Buffers<cr>
 let g:which_key_map.s.b = 'buffers'
+:nnoremap <leader>sy /<C-r>"<cr>
+let g:which_key_map.s.y = 'yanked'
 
 let g:which_key_map.s.a = { 'name' : '+Ag' }
 :nnoremap <leader>sar :Ag<space>

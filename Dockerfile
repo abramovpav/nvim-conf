@@ -9,7 +9,7 @@ RUN cd /opt \
 && ./configure \
 && make \
 && make install
-RUN apt-get install -qy silversearcher-ag git curl
+RUN apt-get install -qy silversearcher-ag git curl aspell aspell-en
 RUN cd /opt && curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage \
 && chmod u+x nvim.appimage \
 && ./nvim.appimage --appimage-extract \
