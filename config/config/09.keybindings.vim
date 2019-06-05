@@ -23,10 +23,8 @@ let g:which_key_map.m.c.o = 'open'
 let g:which_key_map.m.c.c = 'close'
 :nnoremap <leader>mt :TagbarToggle<CR>
 let g:which_key_map.m.t = 'tabbar toggle'
-
-let g:which_key_map.t = {'name': '+Toggle'}
-:nnoremap <leader>ts :call SpellToggle()<cr>
-let g:which_key_map.t.s = 'spell'
+:nnoremap <leader>ms :call SpellToggle()<cr>
+let g:which_key_map.m.s = 'spell'
 
 let g:which_key_map.q = { 'name' : '+Quickfix' }
 let g:which_key_map.q.o = 'open'
