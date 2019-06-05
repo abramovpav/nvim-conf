@@ -7,8 +7,6 @@ set nowrap
 set signcolumn=auto:2
 set t_Co=256
 set encoding=utf-8
-"set spellfile=/root/.config/nvim/config/spelling/words.add
-"set spell spelllang=en_us
 set laststatus=2
 set statusline=%F         " Path to the file
 set statusline+=%<

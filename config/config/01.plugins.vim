@@ -12,5 +12,10 @@ Plug 'liuchengxu/space-vim-theme'
 Plug 'liuchengxu/vim-which-key'
 
 Plug 'w0rp/ale'
+Plug 'sheerun/vim-polyglot'
+Plug 'majutsushi/tagbar'
+
+Plug 'vim-scripts/dbext.vim'
+
 call plug#end()
 

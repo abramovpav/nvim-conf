@@ -4,6 +4,10 @@ let g:which_key_map =  {}
 :inoremap jk <esc>
 :inoremap <esc> <nop>
 
+:vnoremap P "0p
+let g:which_key_map.r = { 'name' : '+Replace' }
+:vnoremap <leader>ry "ry:%s/<C-r>r/<C-r>0/gc<CR>
+let g:which_key_map.r.y = 'with yanked'
 
 let g:which_key_map.v = { 'name' : '+Nvim config' }
 :nnoremap <leader>ve :vsplit ~/.config/nvim/config<cr>
@@ -17,16 +21,23 @@ let g:which_key_map.m.c = {'name': '+Copy'}
 let g:which_key_map.m.c.o = 'open'
 :nnoremap <leader>mcc :tabclose<CR>
 let g:which_key_map.m.c.c = 'close'
+:nnoremap <leader>mt :TagbarToggle<CR>
+let g:which_key_map.m.t = 'tabbar toggle'
 
 let g:which_key_map.t = {'name': '+Toggle'}
 :nnoremap <leader>ts :call SpellToggle()<cr>
 let g:which_key_map.t.s = 'spell'
 
-let g:which_key_map.o = { 'name' : '+Open' }
-nnoremap <silent> <leader>oq  :copen<CR>
-let g:which_key_map.o.q = 'quickfix'
-nnoremap <silent> <leader>ol  :lopen<CR>
-let g:which_key_map.o.l = 'loclist'
+let g:which_key_map.q = { 'name' : '+Quickfix' }
+let g:which_key_map.q.o = 'open'
+nnoremap <silent> <leader>qo  :copen<CR>
+let g:which_key_map.q.c = 'close'
+nnoremap <silent> <leader>qc  :cclose<CR>
+let g:which_key_map.q.n = 'next'
+nnoremap <silent> <leader>qn  :cnext<CR>
+let g:which_key_map.q.p = 'previous'
+nnoremap <silent> <leader>qp  :cprevious<CR>
+
 
 let g:which_key_map.w = { 'name' : '+Window' }
 :nnoremap <leader>wh <C-w>h
@@ -86,6 +97,16 @@ let g:which_key_map.l.d = 'go to definition'
 let g:which_key_map.l.f = 'fix formatting'
 
 
+let g:which_key_map.d = { 'name' : '+DB' }
+let g:which_key_map.d.e = { 'name' : '+Execute' }
+:nnoremap <leader>dec :DBExecSQLUnderCursor<CR>
+let g:which_key_map.d.e.c = 'under cursor'
+:nnoremap <leader>der :DBExecRangeSQL<CR>
+let g:which_key_map.d.e.r = 'range'
+:vnoremap <leader>der :DBExecVisualSQL<CR>
+:nnoremap <leader>ds :DBCompleteTables<CR>
+let g:which_key_map.d.r = 'sync'
+
 function! DeleteInactiveBufs()
     "From tabpagebuflist() help, get a list of all buffers in all tabs
     let tablist = []
@@ -113,3 +134,4 @@ let g:which_key_map.b.p = 'wipeout all'
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+
