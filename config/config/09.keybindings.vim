@@ -103,7 +103,7 @@ let g:which_key_map.d.e.c = 'under cursor'
 let g:which_key_map.d.e.r = 'range'
 :vnoremap <leader>der :DBExecVisualSQL<CR>
 :nnoremap <leader>ds :DBCompleteTables<CR>
-let g:which_key_map.d.r = 'sync'
+let g:which_key_map.d.s = 'sync'
 
 function! DeleteInactiveBufs()
     "From tabpagebuflist() help, get a list of all buffers in all tabs
