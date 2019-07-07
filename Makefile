@@ -1,5 +1,15 @@
+docker_nvim := docker run --rm -it \
+        --network host \
+	-v /Users/westandskif/Work/aprenita:/app:cached \
+	-v /Users/westandskif/Work/aprenita-infrastructure:/infra:cached \
+	-v /Users/westandskif/Work/amt:/amt:cached \
+	-v /Users/westandskif/Own/nvim-conf/config:/mnt/vim-config \
+        --name=apvim \
+	aprenita-nvim
 build:
-    docker build -t project-nvim .
+	docker build -t aprenita-nvim .
 
 run:
-    docker run --rm -it -v /path/to/code:/path/to/code project-nvim bash
+	$(docker_nvim) nvim
+bash:
+	$(docker_nvim) bash
