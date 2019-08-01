@@ -22,9 +22,14 @@ set redrawtime=10000
 let g:netrw_altv = 1
 let g:netrw_alto = 1
 
+let g:tagbar_foldlevel = 0
+let g:tagbar_autoclose = 1
+let g:tagbar_sort = 0
+
+
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 let g:airline_section_a = ''
-
+let g:airline_section_x = ''
 let g:spell_enabled = 0
 function! SpellToggle()
     if g:spell_enabled
