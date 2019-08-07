@@ -1,2 +1,5 @@
 .DS_Store
 .Dockerfile.swp
+autogen_scripts/
+tags
+tags.temp

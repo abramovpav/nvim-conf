@@ -1,6 +1,6 @@
 #!/bin/bash
-export PROJECT_NAME=aprenita_main
-export PROJECT_PYTHON_IMAGE=68673f14072f
+export PROJECT_NAME=$1
+export PROJECT_PYTHON_IMAGE=$2
 
 
 # Installing pyenv & pyenv virtualenv
