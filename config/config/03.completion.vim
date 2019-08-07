@@ -2,7 +2,7 @@ let g:ale_fixers = {
 			\ 'python': ['black', 'isort'],
 			\ }
 let g:ale_linters = {
-			\ 'python': ['pyls'],
+			\ 'python': ['pyls', 'spell_check'],
 			\ }
 let g:ale_python_pyls_config = {
    \ 'pyls':  {

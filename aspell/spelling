@@ -1,0 +1,36 @@
+#!/bin/bash
+
+usage()
+{
+    echo "usage: spelling -a,--add [WORD]
+       spelling [FILE]"
+}
+
+
+check() 
+{
+    cat $1 \
+        | sed 's/^$/ /g; s/\#/ /g' \
+        | aspell --mode=none --ignore=2 --dont-backup --dont-suggest --run-together --run-together-limit=1000 --run-together-min=3 pipe \
+        | awk -v FS=':' 'NR>1{print $1}' \
+        | awk -v fn=$1 -v OFS=':' 'BEGIN {n=1} NF==0 {n++} /^..+$/{print fn, n, $NF + 1, $2}'
+}
+
+add()
+{
+    echo -e "*$1\n#" | aspell -a
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -a | --add )            shift
+                                add $1
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     check $1
+                                exit 1
+    esac
+    shift
+done

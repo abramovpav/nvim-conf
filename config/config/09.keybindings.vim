@@ -48,6 +48,16 @@ let g:which_key_map.w.k = 'switch to up'
 let g:which_key_map.w.l = 'switch to right'
 
 
+let g:which_key_map.t = { 'name' : '+Tab' }
+:nnoremap <leader>tN :tabnew<CR>
+let g:which_key_map.t.N = 'new'
+:nnoremap <leader>tc :tabclose<CR>
+let g:which_key_map.t.c = 'close'
+:nnoremap <leader>tn :tabnext<CR>
+let g:which_key_map.t.n = 'next'
+:nnoremap <leader>tp :tabprevious<CR>
+let g:which_key_map.t.p = 'prev'
+
 let g:which_key_map.j = { 'name' : '+Jump' }
 :nnoremap <leader>jc :e%:p:h<cr>
 let g:which_key_map.j.c = 'current buffer dir'
@@ -88,11 +98,13 @@ inoremap § <Tab>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
 
-let g:which_key_map.l = { 'name' : '+LanguageClient' }
+let g:which_key_map.l = { 'name' : '+Language' }
 :nnoremap <leader>ld :ALEGoToDefinition<CR>
 let g:which_key_map.l.d = 'go to definition'
 :nnoremap <leader>lf :ALEFix<CR>
 let g:which_key_map.l.f = 'fix formatting'
+:nnoremap <leader>la "ryiw:silent !spelling -a <C-r>r<CR>
+let g:which_key_map.l.a = 'add word'
 
 
 let g:which_key_map.d = { 'name' : '+DB' }
@@ -104,6 +116,7 @@ let g:which_key_map.d.e.r = 'range'
 :vnoremap <leader>der :DBExecVisualSQL<CR>
 :nnoremap <leader>ds :DBCompleteTables<CR>
 let g:which_key_map.d.s = 'sync'
+
 
 function! DeleteInactiveBufs()
     "From tabpagebuflist() help, get a list of all buffers in all tabs
