@@ -5,14 +5,14 @@ export PROJECT_PYTHON_IMAGE=$2
 
 # Installing pyenv & pyenv virtualenv
 brew install pyenv
-export PYENV_ROOT=/usr/local/opt/pyenv  
+_1='export PYENV_ROOT=/usr/local/opt/pyenv'
+eval $_1
 PYENV_VIRTUALENV_DIR=$(pyenv root)/plugins/pyenv-virtualenv
 if [ ! -d "$PYENV_VIRTUALENV_DIR" ]
 then 
 	git clone https://github.com/pyenv/pyenv-virtualenv.git $PYENV_VIRTUALENV_DIR
 fi
 
-_1='export PYENV_ROOT=/usr/local/opt/pyenv'
 _2='eval "$(pyenv init -)"'
 _3='eval "$(pyenv virtualenv-init -)"'
 if grep -Fxq "$_1" ~/.bash_profile

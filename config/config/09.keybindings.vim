@@ -103,7 +103,8 @@ let g:which_key_map.l = { 'name' : '+Language' }
 let g:which_key_map.l.d = 'go to definition'
 :nnoremap <leader>lf :ALEFix<CR>
 let g:which_key_map.l.f = 'fix formatting'
-:nnoremap <leader>la "ryiw:silent !spelling -a <C-r>r<CR>
+:nnoremap <leader>la "ryiw:silent !spelling -a <C-r>r
+:vnoremap <leader>la "ry:silent !spelling -a <C-r>r
 let g:which_key_map.l.a = 'add word'
 
 

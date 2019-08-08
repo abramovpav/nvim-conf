@@ -1,5 +1,6 @@
-personal_ws-1.1 en 70 
+personal_ws-1.1 en 74 
 environ
+xlsxwriter
 dest
 attr
 http
@@ -28,13 +29,16 @@ cls
 isnull
 qbo
 dateutil
+debounced
 Accelerate
 Agg
+ids
 isort
 kpi
 django
 attrs
 elif
+idx
 aprenita
 Factoring
 validators
