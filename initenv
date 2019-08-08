@@ -83,7 +83,7 @@ SCRIPT_PATH="${AUTOGEN_SCRIPTS_DIR}/${SCRIPT_NAME}"
 
 mkdir -p $AUTOGEN_SCRIPTS_DIR
 echo "#!/bin/bash
-source $existing_env/bin/activate && nvim" > "$SCRIPT_PATH"
+source $existing_env/bin/activate && nvim \$@" > "$SCRIPT_PATH"
 chmod 0777 "$SCRIPT_PATH"
 ln -sf $SCRIPT_PATH "/usr/local/bin/${SCRIPT_NAME}"
 echo $SCRIPT_NAME
