@@ -68,12 +68,16 @@ docker rm -v $id
 
 
 echo "Installing Nvim deps"
-$existing_env/bin/pip3 install pynvim \
-	python-language-server \
-	pylint \
-	pylint-django \
-	pyls-black \
-	pyls-isort
+dev_packages="pynvim \
+python-language-server \
+pylint \
+black \
+isort \
+pylint-django \
+pyls-black \
+pyls-isort"
+$existing_env/bin/pip3 uninstall -y $dev_packages
+$existing_env/bin/pip3 install -U $dev_packages
 $existing_env/bin/pip3 install -U greenlet
 
 echo "Create executable nvim with python binary set"

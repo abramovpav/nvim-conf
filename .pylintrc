@@ -60,6 +60,7 @@ disable=
     missing-docstring,
     protected-access,
     too-few-public-methods,
+    C0103,
     # handled by black
     format,
     C0301

@@ -30,16 +30,3 @@ let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 let g:airline_section_a = ''
 let g:airline_section_x = ''
 let g:spell_enabled = 0
-function! SpellToggle()
-    if g:spell_enabled
-        set nospell
-        syntax spell default
-        let g:spell_enabled = 0
-        echo 'Spell check disabled'
-    else
-        set spell spelllang=en_us
-        syntax spell toplevel
-        let g:spell_enabled = 1
-        echo 'Spell check enabled'
-    endif
-endfunction
