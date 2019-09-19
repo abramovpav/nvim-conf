@@ -61,6 +61,7 @@ disable=
     protected-access,
     too-few-public-methods,
     C0103,
+    R1710,
     # handled by black
     format,
     C0301

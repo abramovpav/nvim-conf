@@ -15,5 +15,7 @@ Plug 'w0rp/ale'
 Plug 'sheerun/vim-polyglot'
 Plug 'majutsushi/tagbar'
 
+Plug 'mileszs/ack.vim'
+
 call plug#end()
 

@@ -3,6 +3,7 @@ let g:which_key_map =  {}
 
 :inoremap jk <esc>
 :inoremap <esc> <nop>
+:tnoremap <Esc> <C-\><C-n>
 
 :vnoremap P "0p
 let g:which_key_map.r = { 'name' : '☰ Replace' }
@@ -30,9 +31,11 @@ let g:which_key_map.q = { 'name' : '☰ Quickfix' }
 let g:which_key_map.q.o = 'open'
 nnoremap <silent> <leader>qo  :copen<CR>
 let g:which_key_map.q.c = 'close'
-nnoremap <silent> <leader>qc  :cclose<CR>
+nnoremap <silent> <leader>qC  :cclose<CR>
 let g:which_key_map.q.n = 'next'
 nnoremap <silent> <leader>qn  :cnext<CR>
+let g:which_key_map.q.c = 'current'
+nnoremap <silent> <leader>qc  :cc<CR>
 let g:which_key_map.q.p = 'previous'
 nnoremap <silent> <leader>qp  :cprevious<CR>
 
