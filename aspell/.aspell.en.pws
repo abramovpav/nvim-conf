@@ -1,9 +1,9 @@
-personal_ws-1.1 en 123 
+personal_ws-1.1 en 124 
 trunc
 api
 utils
-ITunes
 itunes
+ITunes
 CHF
 INV
 analytics
@@ -16,15 +16,16 @@ len
 mca
 isin
 cls
+paginator
 iter
 environ
 enum
-Enum
 href
+btn
 sku
 ToOne
-OrderRel
 orderrel
+OrderRel
 isnull
 kpi
 rels
@@ -70,8 +71,8 @@ async
 numpy
 dateutil
 elif
-usd
 uri
+usd
 outof
 OutOf
 ACH
@@ -102,7 +103,7 @@ sqlalchemy
 GPS
 pytz
 args
-Serializer
+serializer
 argv
 serializers
 gte
