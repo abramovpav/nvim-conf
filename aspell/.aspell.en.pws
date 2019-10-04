@@ -1,4 +1,4 @@
-personal_ws-1.1 en 124 
+personal_ws-1.1 en 126 
 trunc
 api
 utils
@@ -7,6 +7,7 @@ ITunes
 CHF
 INV
 analytics
+APPODEAL
 pytest
 sid
 Fb
@@ -15,6 +16,7 @@ psycopg
 len
 mca
 isin
+RECURLY
 cls
 paginator
 iter

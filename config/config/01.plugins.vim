@@ -16,6 +16,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'majutsushi/tagbar'
 
 Plug 'mileszs/ack.vim'
+Plug 'Asheq/close-buffers.vim'
 
 call plug#end()
 
