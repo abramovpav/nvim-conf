@@ -1,4 +1,5 @@
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+let g:airline#extensions#virtualenv#enabled=0
 function! AirlineInit()
   let g:airline_section_a = ''
   let g:airline_section_b = ''
