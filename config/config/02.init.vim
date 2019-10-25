@@ -11,6 +11,7 @@ set laststatus=2
 set statusline=%F         " Path to the file
 set statusline+=%<
 set statusline+=%=        " Switch to the right side
+set statusline=%F         " Path to the file
 set statusline+=%P        " Percentage
 set statusline+=\ of\           " Separator
 set statusline+=%L        " Total lines
@@ -27,7 +28,4 @@ let g:tagbar_foldlevel = 0
 let g:tagbar_autoclose = 1
 let g:tagbar_sort = 0
 
-let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-let g:airline_section_a = ''
-let g:airline_section_x = ''
 let g:spell_enabled = 0

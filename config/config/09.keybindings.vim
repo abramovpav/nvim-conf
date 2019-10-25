@@ -120,8 +120,12 @@ let g:which_key_map.d.e.r = 'range'
 let g:which_key_map.d.s = 'sync'
 
 let g:which_key_map.b = {'name': '☰ Buffers'}
-:nnoremap <leader>bq :CloseHiddenBuffers<CR>
+:nnoremap <silent> <leader>bq :CloseHiddenBuffers<CR>
 let g:which_key_map.b.q = 'quit all'
+
+let g:which_key_map.c = {'name': '☰ Commands'}
+:nnoremap <leader>cf :!cp '%:p' '%:p:h/.%:e'<Left><Left><Left><Left><Left>
+let g:which_key_map.c.f = 'copy file'
 
 
 call which_key#register('<Space>', "g:which_key_map")

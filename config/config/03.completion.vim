@@ -9,7 +9,7 @@ let g:ale_python_pyls_config = {
    \     'plugins': {
    \         'pycodestyle': {'enabled': v:false},
    \         'mccabe': {'enabled': v:false},
-   \         'pyflakes': {'enabled': v:false},
+   \         'pyflakes': {'enabled': v:true},
    \         'pylint': {'enabled': v:true}
    \     }
    \ }
