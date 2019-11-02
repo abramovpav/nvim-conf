@@ -71,6 +71,7 @@ echo "Installing Nvim deps"
 dev_packages="pynvim \
 python-language-server \
 pylint \
+flake8 \
 black \
 isort \
 pylint-django \

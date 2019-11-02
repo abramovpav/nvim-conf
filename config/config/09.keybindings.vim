@@ -27,17 +27,24 @@ let g:which_key_map.m.t = 'tabbar toggle'
 :nnoremap <leader>ms :call SpellToggle()<cr>
 let g:which_key_map.m.s = 'spell'
 
-let g:which_key_map.q = { 'name' : '☰ Quickfix' }
-let g:which_key_map.q.o = 'open'
-nnoremap <silent> <leader>qo  :copen<CR>
+:function IsQuickfixOpen()
+:  return len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist'))
+:endfunction
+
+let g:which_key_map.q = { 'name' : '☰ Quickfix / Loclist' }
+let g:which_key_map.q.o = {'name': '☰ Open'}
+let g:which_key_map.q.o.q = 'quickfix'
+nnoremap <silent> <leader>qoq  :copen<CR>
+let g:which_key_map.q.o.l = 'loclist'
+nnoremap <silent> <leader>qol  :lopen<CR>
 let g:which_key_map.q.c = 'close'
-nnoremap <silent> <leader>qC  :cclose<CR>
+nnoremap <silent><expr> <leader>qC IsQuickfixOpen() ? ":cclose\<CR>" : ":lclose\<CR>"
 let g:which_key_map.q.n = 'next'
-nnoremap <silent> <leader>qn  :cnext<CR>
+nnoremap <silent><expr> <leader>qn IsQuickfixOpen() ? ":cnext\<CR>" : ":lnext\<CR>"
 let g:which_key_map.q.c = 'current'
-nnoremap <silent> <leader>qc  :cc<CR>
+nnoremap <silent><expr> <leader>qc IsQuickfixOpen() ? ":cc\<CR>" : ":ll\<CR>"
 let g:which_key_map.q.p = 'previous'
-nnoremap <silent> <leader>qp  :cprevious<CR>
+nnoremap <silent><expr> <leader>qp IsQuickfixOpen() ? ":cprevious\<CR>" : ":lprevious\<CR>"
 
 
 let g:which_key_map.w = { 'name' : '☰ Window' }
@@ -77,47 +84,29 @@ let g:which_key_map.s.b = 'buffers'
 let g:which_key_map.s.y = 'yanked'
 
 let g:which_key_map.s.a = { 'name' : '☰ Ag' }
-:nnoremap <leader>sar :Ag<space>
+:nnoremap <leader>sar :AgRaw<space>
 let g:which_key_map.s.a.r = 'regexp'
-:nnoremap <leader>sae :AgExact<space>
+:nnoremap <leader>sae :AgRaw<space>-Q<space>''<left>
 let g:which_key_map.s.a.e = 'exact'
-:nnoremap <leader>saw :AgWords<space>
+:nnoremap <leader>saw :AgRaw<space>-Q<space>-w<space>''<left>
 let g:which_key_map.s.a.w = 'exact words'
-let g:which_key_map.s.a.s = { 'name' : '☰ Sensitive' }
-:nnoremap <leader>sasr :AgCs<space>
-let g:which_key_map.s.a.s.r = 'regex'
-:nnoremap <leader>sase :AgCsExact<space>
-let g:which_key_map.s.a.s.e = 'exact'
-:nnoremap <leader>sasw :AgCsWords<space>
-let g:which_key_map.s.a.s.w = 'exact words'
 
-
-inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:ALEComplete\<CR>"
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:call ncm2#manual_trigger()\<CR>"
 inoremap § <Tab>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
 
 let g:which_key_map.l = { 'name' : '☰ Language' }
-:nnoremap <leader>ld :ALEGoToDefinition<CR>
+:nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
 let g:which_key_map.l.d = 'go to definition'
-:nnoremap <leader>lf :ALEFix<CR>
+:nnoremap <leader>lf :Neoformat<CR>
 let g:which_key_map.l.f = 'fix formatting'
-:nnoremap <leader>lr :ALEFindReferences<CR>
-let g:which_key_map.l.r = 'find references'
+:nnoremap <leader>ll :Neomake<CR>
+let g:which_key_map.l.l = 'lint'
 :nnoremap <leader>la "ryiw:silent !spelling -a <C-r>r
 :vnoremap <leader>la "ry:silent !spelling -a <C-r>r
 let g:which_key_map.l.a = 'add word'
 
-
-let g:which_key_map.d = { 'name' : '☰ DB' }
-let g:which_key_map.d.e = { 'name' : '☰ Execute' }
-:nnoremap <leader>dec :DBExecSQLUnderCursor<CR>
-let g:which_key_map.d.e.c = 'under cursor'
-:nnoremap <leader>der :DBExecRangeSQL<CR>
-let g:which_key_map.d.e.r = 'range'
-:vnoremap <leader>der :DBExecVisualSQL<CR>
-:nnoremap <leader>ds :DBCompleteTables<CR>
-let g:which_key_map.d.s = 'sync'
 
 let g:which_key_map.b = {'name': '☰ Buffers'}
 :nnoremap <silent> <leader>bq :CloseHiddenBuffers<CR>
