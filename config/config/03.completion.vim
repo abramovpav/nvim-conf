@@ -20,9 +20,9 @@ let g:LanguageClient_serverCommands = {
     \ }
 
 let g:neoformat_run_all_formatters = 1
-let g:neoformat_enabled_python = ['black', 'isort']
+let g:neoformat_enabled_python = ['isort', 'black']
 let g:neomake_python_enabled_makers = ['flake8', 'pylint', 'spelling']
-let g:neomake_open_list = 1
+let g:neomake_open_list = 2
 let g:neomake_virtualtext_current_error = 0
 let g:neomake_highlight_lines = 0
 let g:neomake_highlight_columns = 0
@@ -32,3 +32,9 @@ let g:neomake_spelling_maker = {
 	\ 'errorformat': '%f:%l:%c:%m',
 	\ }
 :call neomake#cmd#disable(g:)
+
+let g:gutentags_ctags_exclude = [
+    \  '.git', '.mypy_cache', '.ipynb_checkpoints', '__pycache__',
+    \ ]
+let g:gutentags_generate_on_new = 0
+let g:gutentags_generate_on_missing = 0
