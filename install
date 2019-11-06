@@ -19,7 +19,6 @@ nvim --headless +PlugInstall +UpdateRemotePlugins +qa
 ln -sf $PWD/.pylintrc ~/.pylintrc
 ln -sf $PWD/pycodestyle ~/.config/pycodestyle
 
-ln -sf $PWD/ale/spell_check.vim ~/.local/share/nvim/plugged/ale/ale_linters/python/spell_check.vim
 ln -sf $PWD/aspell/spelling /usr/local/bin/spelling
 ln -sf $PWD/aspell/.aspell.en.prepl ~/.aspell.en.prepl
 ln -sf $PWD/aspell/.aspell.en.pws ~/.aspell.en.pws
