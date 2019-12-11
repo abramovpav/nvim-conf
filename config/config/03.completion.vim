@@ -35,6 +35,7 @@ let g:neomake_spelling_maker = {
 
 let g:gutentags_ctags_exclude = [
     \  '.git', '.mypy_cache', '.ipynb_checkpoints', '__pycache__',
+    \  '*.min.{js,css}',
     \ ]
 let g:gutentags_generate_on_new = 0
 let g:gutentags_generate_on_missing = 0

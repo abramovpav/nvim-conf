@@ -77,9 +77,7 @@ isort \
 pylint-django \
 pyls-black \
 pyls-isort"
-$existing_env/bin/pip3 uninstall -y $dev_packages
-$existing_env/bin/pip3 install -U $dev_packages
-$existing_env/bin/pip3 install -U greenlet
+$existing_env/bin/python -m pip install --force-reinstall $dev_packages
 
 echo "Create executable nvim with python binary set"
 AUTOGEN_SCRIPTS_DIR="${PWD}/autogen_scripts"

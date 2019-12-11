@@ -1,6 +1,6 @@
 #!/bin/bash
 brew install aspell
-brew install the_silver_searcher
+brew install the_silver_searcher ripgrep
 brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 brew install fd
 

@@ -4,6 +4,8 @@ let g:which_key_map =  {}
 :inoremap jk <esc>
 :inoremap <esc> <nop>
 :tnoremap <Esc> <C-\><C-n>
+:onoremap il :<c-u>normal! _vg_<cr>
+:vnoremap il :<c-u>normal! _vg_<cr>
 
 :vnoremap P "0p
 let g:which_key_map.r = { 'name' : '☰ Replace' }
@@ -37,8 +39,8 @@ let g:which_key_map.q.o.q = 'quickfix'
 nnoremap <silent> <leader>qoq  :copen<CR>
 let g:which_key_map.q.o.l = 'loclist'
 nnoremap <silent> <leader>qol  :lopen<CR>
-let g:which_key_map.q.c = 'close'
-nnoremap <silent><expr> <leader>qC IsQuickfixOpen() ? ":cclose\<CR>" : ":lclose\<CR>"
+let g:which_key_map.q.q = 'quit'
+nnoremap <silent><expr> <leader>qq IsQuickfixOpen() ? ":cclose\<CR>" : ":lclose\<CR>"
 let g:which_key_map.q.n = 'next'
 nnoremap <silent><expr> <leader>qn IsQuickfixOpen() ? ":cnext\<CR>" : ":lnext\<CR>"
 let g:which_key_map.q.c = 'current'
@@ -61,8 +63,8 @@ let g:which_key_map.w.l = 'switch to right'
 let g:which_key_map.t = { 'name' : '☰ Tab' }
 :nnoremap <leader>tn :tabnew<CR>
 let g:which_key_map.t.n = 'new'
-:nnoremap <leader>tc :tabclose<CR>
-let g:which_key_map.t.c = 'close'
+:nnoremap <leader>tq :tabclose<CR>
+let g:which_key_map.t.q = 'quit'
 
 let g:which_key_map.j = { 'name' : '☰ Jump' }
 :nnoremap <leader>jc :e%:p:h<cr>
@@ -83,13 +85,12 @@ let g:which_key_map.s.b = 'buffers'
 :nnoremap <leader>sy /<C-r>"<cr>
 let g:which_key_map.s.y = 'yanked'
 
-let g:which_key_map.s.a = { 'name' : '☰ Ag' }
-:nnoremap <leader>sar :AgRaw<space>
-let g:which_key_map.s.a.r = 'regexp'
-:nnoremap <leader>sae :AgRaw<space>-Q<space>''<left>
-let g:which_key_map.s.a.e = 'exact'
-:nnoremap <leader>saw :AgRaw<space>-Q<space>-w<space>''<left>
-let g:which_key_map.s.a.w = 'exact words'
+:nnoremap <leader>sr :RgRaw<space>-u<space>
+let g:which_key_map.s.r = 'regexp'
+:nnoremap <leader>se :RgRaw<space>-u<space>-F<space>''<left>
+let g:which_key_map.s.e = 'exact'
+:nnoremap <leader>sw :RgRaw<space>-u<space>-F<space>-w<space>''<left>
+let g:which_key_map.s.w = 'exact words'
 
 inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:call ncm2#manual_trigger()\<CR>"
 inoremap § <Tab>
@@ -99,13 +100,20 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 let g:which_key_map.l = { 'name' : '☰ Language' }
 :nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
 let g:which_key_map.l.d = 'go to definition'
-:nnoremap <leader>lf :Neoformat<CR>
-let g:which_key_map.l.f = 'fix formatting'
+let g:which_key_map.l.f = { 'name': '☰ Fix' }
+:nnoremap <leader>lfb :Neoformat black<CR>
+let g:which_key_map.l.f.b = 'black'
+:nnoremap <leader>lfi :Neoformat isort<CR>
+let g:which_key_map.l.f.i = 'isort'
 :nnoremap <leader>ll :Neomake<CR>
 let g:which_key_map.l.l = 'lint'
 :nnoremap <leader>la "ryiw:silent !spelling -a <C-r>r
 :vnoremap <leader>la "ry:silent !spelling -a <C-r>r
 let g:which_key_map.l.a = 'add word'
+let g:which_key_map.l.p = { 'name': '☰ Python' }
+:nnoremap <leader>lpb oimport pdb; pdb.set_trace()<C-c>
+let g:which_key_map.l.p.b = 'add Breakpoint'
+
 
 
 let g:which_key_map.b = {'name': '☰ Buffers'}
