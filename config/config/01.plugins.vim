@@ -26,5 +26,6 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 
+Plug 'wellle/context.vim'
 call plug#end()
 

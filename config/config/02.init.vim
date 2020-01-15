@@ -29,3 +29,4 @@ let g:tagbar_autoclose = 1
 let g:tagbar_sort = 0
 
 let g:spell_enabled = 0
+let g:context_enabled = 0

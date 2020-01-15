@@ -13,7 +13,7 @@ let g:which_key_map.r = { 'name' : '☰ Replace' }
 let g:which_key_map.r.y = 'with yanked'
 
 let g:which_key_map.v = { 'name' : '☰ Nvim config' }
-:nnoremap <leader>ve :vsplit ~/.config/nvim/config<cr>
+:nnoremap <leader>ve :tabnew ~/.config/nvim/config<cr>
 let g:which_key_map.v.e = 'edit'
 :nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
 let g:which_key_map.v.s = 'source'
@@ -85,11 +85,11 @@ let g:which_key_map.s.b = 'buffers'
 :nnoremap <leader>sy /<C-r>"<cr>
 let g:which_key_map.s.y = 'yanked'
 
-:nnoremap <leader>sr :RgRaw<space>-u<space>
+:nnoremap <leader>sr :RgRaw<space>--no-ignore-vcs<space>
 let g:which_key_map.s.r = 'regexp'
-:nnoremap <leader>se :RgRaw<space>-u<space>-F<space>''<left>
+:nnoremap <leader>se :RgRaw<space>--no-ignore-vcs<space>-F<space>''<left>
 let g:which_key_map.s.e = 'exact'
-:nnoremap <leader>sw :RgRaw<space>-u<space>-F<space>-w<space>''<left>
+:nnoremap <leader>sw :RgRaw<space>--no-ignore-vcs<space>-F<space>-w<space>''<left>
 let g:which_key_map.s.w = 'exact words'
 
 inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:call ncm2#manual_trigger()\<CR>"
@@ -105,14 +105,26 @@ let g:which_key_map.l.f = { 'name': '☰ Fix' }
 let g:which_key_map.l.f.b = 'black'
 :nnoremap <leader>lfi :Neoformat isort<CR>
 let g:which_key_map.l.f.i = 'isort'
+:nnoremap <leader>lff :Neoformat<CR>
+let g:which_key_map.l.f.f = 'format'
 :nnoremap <leader>ll :Neomake<CR>
 let g:which_key_map.l.l = 'lint'
+:nnoremap <buffer> <expr> <leader>loi ":!isort -rc -sl ".expand('%')." && autoflake --remove-all-unused-imports --in-place ".expand('%')." && isort ". expand('%')."<CR>:e<CR>"
+let g:which_key_map.l.o = { 'name': '☰ Optimize' }
+let g:which_key_map.l.o.i = 'imports'
+:nnoremap <leader>lc :ContextToggle<CR>
+let g:which_key_map.l.c = 'toggle context'
 :nnoremap <leader>la "ryiw:silent !spelling -a <C-r>r
 :vnoremap <leader>la "ry:silent !spelling -a <C-r>r
 let g:which_key_map.l.a = 'add word'
 let g:which_key_map.l.p = { 'name': '☰ Python' }
 :nnoremap <leader>lpb oimport pdb; pdb.set_trace()<C-c>
 let g:which_key_map.l.p.b = 'add Breakpoint'
+let g:which_key_map.l.s = { 'name': '☰ Spelling' }
+:nnoremap <leader>lsa :SpellingAddWord<CR>
+let g:which_key_map.l.s.a = 'Add word'
+:nnoremap <leader>lst :SpellingToggle<CR>
+let g:which_key_map.l.s.t = 'toggle'
 
 
 
@@ -123,6 +135,8 @@ let g:which_key_map.b.q = 'quit all'
 let g:which_key_map.c = {'name': '☰ Commands'}
 :nnoremap <leader>cf :!cp '%:p' '%:p:h/.%:e'<Left><Left><Left><Left><Left>
 let g:which_key_map.c.f = 'copy file'
+:nnoremap <silent> <leader>cp :let @0=@%<CR>:let @+=@%<CR>
+let g:which_key_map.c.p = 'copy file path'
 
 
 call which_key#register('<Space>', "g:which_key_map")

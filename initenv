@@ -2,40 +2,6 @@
 export PROJECT_NAME=$1
 export PROJECT_PYTHON_IMAGE=$2
 
-
-# Installing pyenv & pyenv virtualenv
-brew install pyenv
-_1='export PYENV_ROOT=/usr/local/opt/pyenv'
-eval $_1
-PYENV_VIRTUALENV_DIR=$(pyenv root)/plugins/pyenv-virtualenv
-if [ ! -d "$PYENV_VIRTUALENV_DIR" ]
-then 
-	git clone https://github.com/pyenv/pyenv-virtualenv.git $PYENV_VIRTUALENV_DIR
-fi
-
-_2='eval "$(pyenv init -)"'
-_3='eval "$(pyenv virtualenv-init -)"'
-if grep -Fxq "$_1" ~/.bash_profile
-then 
-	echo "pyenv already initialized"
-else
-	echo -e $_1 >> ~/.bash_profile 
-	echo -e $_2 >> ~/.bash_profile 
-	eval "$_1"
-	eval "$_2"
-	echo "pyenv initialized"
-fi
-
-if grep -Fxq "$_3" ~/.bash_profile
-then 
-	echo "pyenv virtualenv already initialized"
-else
-	echo -e $_3 >> ~/.bash_profile 
-	eval "$_3"
-	echo "pyenv virtualenv initialized"
-fi
-
-
 # Identifying python version and sitepackages path
 GET_PYTHON_SITEPACKAGES_PATH='python -c "import site; print([p for p in site.getsitepackages() if \"site-packages\" in p][0])"'
 GET_PYTHON_VERSION='python -c "import sys; print(sys.version.split()[0])"'
@@ -72,6 +38,7 @@ dev_packages="pynvim \
 python-language-server \
 pylint \
 flake8 \
+autoflake \
 black \
 isort \
 pylint-django \
@@ -86,7 +53,7 @@ SCRIPT_PATH="${AUTOGEN_SCRIPTS_DIR}/${SCRIPT_NAME}"
 
 mkdir -p $AUTOGEN_SCRIPTS_DIR
 echo "#!/bin/bash
-source $existing_env/bin/activate && nvim \$@" > "$SCRIPT_PATH"
+source $existing_env/bin/activate && ~/nvim-osx64/bin/nvim \$@" > "$SCRIPT_PATH"
 chmod 0777 "$SCRIPT_PATH"
 ln -sf $SCRIPT_PATH "/usr/local/bin/${SCRIPT_NAME}"
 echo $SCRIPT_NAME

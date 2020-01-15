@@ -1,20 +1,18 @@
 #!/bin/bash
 brew install aspell
-brew install the_silver_searcher ripgrep
+brew install ripgrep
 brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 brew install fd
 
 curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz -o /tmp/nvim.tar.gz
 tar -xzf /tmp/nvim.tar.gz -C ~/
 rm /tmp/nvim.tar.gz
-ln -sf ~/nvim-osx64/bin/nvim /usr/local/bin/nvim
 
 ln -sf $PWD/config/init.vim ~/.config/nvim/init.vim
 ln -sf $PWD/config/config ~/.config/nvim
 
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-nvim --headless +PlugInstall +UpdateRemotePlugins +qa
 
 ln -sf $PWD/.pylintrc ~/.pylintrc
 ln -sf $PWD/pycodestyle ~/.config/pycodestyle
@@ -22,3 +20,69 @@ ln -sf $PWD/pycodestyle ~/.config/pycodestyle
 ln -sf $PWD/aspell/spelling /usr/local/bin/spelling
 ln -sf $PWD/aspell/.aspell.en.prepl ~/.aspell.en.prepl
 ln -sf $PWD/aspell/.aspell.en.pws ~/.aspell.en.pws
+
+
+echo "Installing pyenv & pyenv virtualenv"
+brew install pyenv
+_1='export PYENV_ROOT=/usr/local/opt/pyenv'
+eval $_1
+PYENV_VIRTUALENV_DIR=$(pyenv root)/plugins/pyenv-virtualenv
+if [ ! -d "$PYENV_VIRTUALENV_DIR" ]
+then
+	git clone https://github.com/pyenv/pyenv-virtualenv.git $PYENV_VIRTUALENV_DIR
+fi
+
+_2='eval "$(pyenv init -)"'
+_3='eval "$(pyenv virtualenv-init -)"'
+if grep -Fxq "$_1" ~/.bash_profile
+then
+	echo "pyenv already initialized"
+else
+	echo -e $_1 >> ~/.bash_profile
+	echo -e $_2 >> ~/.bash_profile
+	eval "$_1"
+	eval "$_2"
+	echo "pyenv initialized"
+fi
+
+if grep -Fxq "$_3" ~/.bash_profile
+then
+	echo "pyenv virtualenv already initialized"
+else
+	echo -e $_3 >> ~/.bash_profile
+	eval "$_3"
+	echo "pyenv virtualenv initialized"
+fi
+
+
+echo "Setting up python & virtualenv"
+NVIM_PYTHON_ENV_NAME='nvim_python'
+CONTAINER_PYTHON_VERSION='3.6.9'
+FORCE_PYTHON_REINSTALL="${FORCE_PYTHON_REINSTALL:-'0'}"
+existing_env=$(pyenv prefix $NVIM_PYTHON_ENV_NAME)
+if [ $? -eq 0 ] && [ FORCE_PYTHON_REINSTALL -ne '0' ]
+then
+	echo "dropping existing virtualenv $existing_env"
+	pyenv virtualenv-delete -f $NVIM_PYTHON_ENV_NAME
+        pyenv install -s $CONTAINER_PYTHON_VERSION
+        pyenv rehash
+        pyenv virtualenv $CONTAINER_PYTHON_VERSION $NVIM_PYTHON_ENV_NAME
+        existing_env=$(pyenv prefix $NVIM_PYTHON_ENV_NAME)
+fi
+
+echo "Installing Nvim deps"
+dev_packages="pynvim"
+$existing_env/bin/python -m pip install $dev_packages
+
+echo "Create executable nvim with python binary set"
+AUTOGEN_SCRIPTS_DIR="${PWD}/autogen_scripts"
+SCRIPT_NAME="init_pyvenv_and_run_nvim"
+SCRIPT_PATH="${AUTOGEN_SCRIPTS_DIR}/${SCRIPT_NAME}"
+mkdir -p $AUTOGEN_SCRIPTS_DIR
+echo "#!/bin/bash
+source $existing_env/bin/activate && ~/nvim-osx64/bin/nvim \$@" > "$SCRIPT_PATH"
+chmod 0777 "$SCRIPT_PATH"
+ln -sf $SCRIPT_PATH "/usr/local/bin/nvim"
+
+echo "Installing nvim plugins"
+nvim --headless +PlugInstall +PlugUpgrade +qa
