@@ -1,142 +1,140 @@
-:let mapleader = " "
-let g:which_key_map =  {}
-
-:inoremap jk <esc>
-:inoremap <esc> <nop>
-:tnoremap <Esc> <C-\><C-n>
-:onoremap il :<c-u>normal! _vg_<cr>
-:vnoremap il :<c-u>normal! _vg_<cr>
-
-:vnoremap P "0p
-let g:which_key_map.r = { 'name' : '☰ Replace' }
-:vnoremap <leader>ry "ry:%s/<C-r>r/<C-r>0/gc<CR>
-let g:which_key_map.r.y = 'with yanked'
-
-let g:which_key_map.v = { 'name' : '☰ Nvim config' }
-:nnoremap <leader>ve :tabnew ~/.config/nvim/config<cr>
-let g:which_key_map.v.e = 'edit'
-:nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
-let g:which_key_map.v.s = 'source'
-
-let g:which_key_map.m = {'name': '☰ Mode'}
-let g:which_key_map.m.c = {'name': '☰ Copy'}
-:nnoremap <leader>mco :tab split<CR>:setlocal nonumber<CR>:setlocal signcolumn=no<CR> 
-let g:which_key_map.m.c.o = 'open'
-:nnoremap <leader>mcc :tabclose<CR>
-let g:which_key_map.m.c.c = 'close'
-:nnoremap <leader>mt :TagbarToggle<CR>
-let g:which_key_map.m.t = 'tabbar toggle'
-:nnoremap <leader>ms :call SpellToggle()<cr>
-let g:which_key_map.m.s = 'spell'
-
-:function IsQuickfixOpen()
-:  return len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist'))
-:endfunction
-
-let g:which_key_map.q = { 'name' : '☰ Quickfix / Loclist' }
-let g:which_key_map.q.o = {'name': '☰ Open'}
-let g:which_key_map.q.o.q = 'quickfix'
-nnoremap <silent> <leader>qoq  :copen<CR>
-let g:which_key_map.q.o.l = 'loclist'
-nnoremap <silent> <leader>qol  :lopen<CR>
-let g:which_key_map.q.q = 'quit'
-nnoremap <silent><expr> <leader>qq IsQuickfixOpen() ? ":cclose\<CR>" : ":lclose\<CR>"
-let g:which_key_map.q.n = 'next'
-nnoremap <silent><expr> <leader>qn IsQuickfixOpen() ? ":cnext\<CR>" : ":lnext\<CR>"
-let g:which_key_map.q.c = 'current'
-nnoremap <silent><expr> <leader>qc IsQuickfixOpen() ? ":cc\<CR>" : ":ll\<CR>"
-let g:which_key_map.q.p = 'previous'
-nnoremap <silent><expr> <leader>qp IsQuickfixOpen() ? ":cprevious\<CR>" : ":lprevious\<CR>"
 
 
-let g:which_key_map.w = { 'name' : '☰ Window' }
-:nnoremap <leader>wh <C-w>h
-let g:which_key_map.w.h = 'switch to left'
-:nnoremap <leader>wj <C-w>j
-let g:which_key_map.w.j = 'switch to down'
-:nnoremap <leader>wk <C-w>k
-let g:which_key_map.w.k = 'switch to up'
-:nnoremap <leader>wl <C-w>l
-let g:which_key_map.w.l = 'switch to right'
+" ========== GENERAL ==========
+inoremap <esc> <nop>
+inoremap jk <esc>
+" tnoremap <Esc> <C-\><C-n>
 
-
-let g:which_key_map.t = { 'name' : '☰ Tab' }
-:nnoremap <leader>tn :tabnew<CR>
-let g:which_key_map.t.n = 'new'
-:nnoremap <leader>tq :tabclose<CR>
-let g:which_key_map.t.q = 'quit'
-
-let g:which_key_map.j = { 'name' : '☰ Jump' }
-:nnoremap <leader>jc :e%:p:h<cr>
-let g:which_key_map.j.c = 'current buffer dir'
-:nnoremap <leader>jr :e.<cr>
-let g:which_key_map.j.r = 'pwd'
-
-
-let g:which_key_map.s = { 'name' : '☰ search' }
-:nnoremap <leader>sc :let @/=""<cr>
-let g:which_key_map.s.c = 'clear'
-:nnoremap <leader>sf :FZF<cr>
-let g:which_key_map.s.f = 'files'
-:nnoremap <leader>st :Tags<cr>
-let g:which_key_map.s.t = 'tags'
-:nnoremap <leader>sb :Buffers<cr>
-let g:which_key_map.s.b = 'buffers'
-:nnoremap <leader>sy /<C-r>"<cr>
-let g:which_key_map.s.y = 'yanked'
-
-:nnoremap <leader>sr :RgRaw<space>--no-ignore-vcs<space>
-let g:which_key_map.s.r = 'regexp'
-:nnoremap <leader>se :RgRaw<space>--no-ignore-vcs<space>-F<space>''<left>
-let g:which_key_map.s.e = 'exact'
-:nnoremap <leader>sw :RgRaw<space>--no-ignore-vcs<space>-F<space>-w<space>''<left>
-let g:which_key_map.s.w = 'exact words'
-
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:call ncm2#manual_trigger()\<CR>"
 inoremap § <Tab>
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+
+onoremap il :<c-u>normal! _vg_<cr>
+vnoremap P "0p
+vnoremap il :<c-u>normal! _vg_<cr>
 
 
-let g:which_key_map.l = { 'name' : '☰ Language' }
-:nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+" ========== LEADER ==========
+let mapleader = " "
+let maplocalleader = " "
+let g:which_key_map =  {}
+
+let g:which_key_map.v = { 'name' : '☰ NVIM CONFIG' }
+let g:which_key_map.v.e = 'edit'
+let g:which_key_map.v.s = 'source'
+nnoremap <leader>ve :tabnew ~/.config/nvim/config<cr>
+nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
+
+
+let g:which_key_map.m = {'name': '☰ Mode'}
+let g:which_key_map.m.s = 'spell'
+let g:which_key_map.m.t = 'tabbar toggle'
+nnoremap <leader>ms :call SpellToggle()<cr>
+nnoremap <leader>mt :TagbarToggle<CR>
+
+
+function IsQuickfixOpen()
+  return len(filter(getwininfo(), 'v:val.quickfix && !v:val.loclist'))
+endfunction
+
+let g:which_key_map.q = { 'name' : '☰ QUICKFIX / LOCLIST' }
+let g:which_key_map.q.o = {'name': '☰ Open'}
+let g:which_key_map.q.c = 'current'
+let g:which_key_map.q.n = 'next'
+let g:which_key_map.q.o.l = 'loclist'
+let g:which_key_map.q.o.q = 'quickfix'
+let g:which_key_map.q.p = 'previous'
+let g:which_key_map.q.q = 'quit'
+nnoremap <silent> <leader>qol  :lopen<CR>
+nnoremap <silent> <leader>qoq  :copen<CR>
+nnoremap <silent><expr> <leader>qc IsQuickfixOpen() ? ":cc\<CR>" : ":ll\<CR>"
+nnoremap <silent><expr> <leader>qn IsQuickfixOpen() ? ":cnext\<CR>" : ":lnext\<CR>"
+nnoremap <silent><expr> <leader>qp IsQuickfixOpen() ? ":cprevious\<CR>" : ":lprevious\<CR>"
+nnoremap <silent><expr> <leader>qq IsQuickfixOpen() ? ":cclose\<CR>" : ":lclose\<CR>"
+
+let g:which_key_map.w = { 'name' : '☰ WINDOW' }
+let g:which_key_map.w.h = 'switch to left'
+let g:which_key_map.w.j = 'switch to down'
+let g:which_key_map.w.k = 'switch to up'
+let g:which_key_map.w.l = 'switch to right'
+nnoremap <leader>wh <C-w>h
+nnoremap <leader>wj <C-w>j
+nnoremap <leader>wk <C-w>k
+nnoremap <leader>wl <C-w>l
+
+let g:which_key_map.t = { 'name' : '☰ TAB' }
+let g:which_key_map.t.n = 'new'
+let g:which_key_map.t.q = 'quit'
+nnoremap <leader>tn :tabnew<CR>
+nnoremap <leader>tq :tabclose<CR>
+
+let g:which_key_map.j = { 'name' : '☰ JUMP' }
+let g:which_key_map.j.c = 'current buffer dir'
+let g:which_key_map.j.r = 'pwd'
+nnoremap <leader>jc :e%:p:h<cr>
+nnoremap <leader>jr :e.<cr>
+
+let g:which_key_map.s = { 'name' : '☰ SEARCH' }
+let g:which_key_map.s.b = 'buffers'
+let g:which_key_map.s.c = 'clear'
+let g:which_key_map.s.e = 'exact'
+let g:which_key_map.s.f = 'files'
+let g:which_key_map.s.r = 'regexp'
+let g:which_key_map.s.t = 'tags'
+let g:which_key_map.s.w = 'exact words'
+let g:which_key_map.s.y = 'yanked'
+nnoremap <leader>sb :Buffers<cr>
+nnoremap <leader>sc :let @/=""<cr>
+nnoremap <leader>se :RgRaw<space>--no-ignore-vcs<space>-F<space>''<left>
+nnoremap <leader>sf :FZF<cr>
+nnoremap <leader>sr :RgRaw<space>--no-ignore-vcs<space>
+nnoremap <leader>st :Tags<cr>
+nnoremap <leader>sw :RgRaw<space>--no-ignore-vcs<space>-F<space>-w<space>''<left>
+nnoremap <leader>sy /<C-r>"<cr>
+
+
+let g:which_key_map.l = { 'name' : '☰ LANGUAGE' }
+let g:which_key_map.l.a = 'add word'
 let g:which_key_map.l.d = 'go to definition'
+let g:which_key_map.l.m = 'make'
+nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+nnoremap <leader>lm :Neomake<CR>
+
+let g:which_key_map.l.a = { 'name' : '☰ Add' }
+let g:which_key_map.l.a.b = 'breakpoint'
+let g:which_key_map.l.a.i = 'import'
+let g:which_key_map.l.a.w = 'word'
+nnoremap <leader>law "ryiw:silent !spelling -a <C-r>r
+vnoremap <leader>law "ry:silent !spelling -a <C-r>r
+
+let g:which_key_map.l.t = { 'name' : '☰ Toggle' }
+let g:which_key_map.l.t.c = 'toggle context'
+let g:which_key_map.l.t.s = 'toggle spelling'
+nnoremap <leader>ltc :ContextToggle<CR>
+nnoremap <leader>lts :SpellingToggle<CR>
+
 let g:which_key_map.l.f = { 'name': '☰ Fix' }
-:nnoremap <leader>lfb :Neoformat black<CR>
-let g:which_key_map.l.f.b = 'black'
-:nnoremap <leader>lfi :Neoformat isort<CR>
-let g:which_key_map.l.f.i = 'isort'
-:nnoremap <leader>lff :Neoformat<CR>
+let g:which_key_map.l.f.a = 'all format'
 let g:which_key_map.l.f.f = 'format'
-:nnoremap <leader>ll :Neomake<CR>
-let g:which_key_map.l.l = 'lint'
-:nnoremap <buffer> <expr> <leader>loi ":!isort -rc -sl ".expand('%')." && autoflake --remove-all-unused-imports --in-place ".expand('%')." && isort ". expand('%')."<CR>:e<CR>"
+let g:which_key_map.l.f.i = 'imports'
+nnoremap <leader>lfa :Neoformat<CR>
+
 let g:which_key_map.l.o = { 'name': '☰ Optimize' }
 let g:which_key_map.l.o.i = 'imports'
-:nnoremap <leader>lc :ContextToggle<CR>
-let g:which_key_map.l.c = 'toggle context'
-:nnoremap <leader>la "ryiw:silent !spelling -a <C-r>r
-:vnoremap <leader>la "ry:silent !spelling -a <C-r>r
-let g:which_key_map.l.a = 'add word'
-let g:which_key_map.l.p = { 'name': '☰ Python' }
-:nnoremap <leader>lpb oimport pdb; pdb.set_trace()<C-c>
-let g:which_key_map.l.p.b = 'add Breakpoint'
+
 let g:which_key_map.l.s = { 'name': '☰ Spelling' }
-:nnoremap <leader>lsa :SpellingAddWord<CR>
 let g:which_key_map.l.s.a = 'Add word'
-:nnoremap <leader>lst :SpellingToggle<CR>
-let g:which_key_map.l.s.t = 'toggle'
+nnoremap <leader>lsa :SpellingAddWord<CR>
 
-
-
-let g:which_key_map.b = {'name': '☰ Buffers'}
-:nnoremap <silent> <leader>bq :CloseHiddenBuffers<CR>
+let g:which_key_map.b = {'name': '☰ BUFFERS'}
+nnoremap <silent> <leader>bq :CloseHiddenBuffers<CR>
 let g:which_key_map.b.q = 'quit all'
 
-let g:which_key_map.c = {'name': '☰ Commands'}
-:nnoremap <leader>cf :!cp '%:p' '%:p:h/.%:e'<Left><Left><Left><Left><Left>
+let g:which_key_map.c = {'name': '☰ COMMANDS'}
 let g:which_key_map.c.f = 'copy file'
-:nnoremap <silent> <leader>cp :let @0=@%<CR>:let @+=@%<CR>
 let g:which_key_map.c.p = 'copy file path'
+nnoremap <leader>cf :!cp '%:p' '%:p:h/.%:e'<Left><Left><Left><Left><Left>
+nnoremap <silent> <leader>cp :let @0=@%<CR>:let @+=@%<CR>
 
 
 call which_key#register('<Space>', "g:which_key_map")
