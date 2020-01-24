@@ -13,51 +13,51 @@ echo "in-docker sitepackages path ${CONTAINER_SITEPACKAGES}"
 
 # Setting up python & virtualenv
 existing_env=$(pyenv prefix $PROJECT_NAME)
-# if [ $? -eq 0 ]
-# then 
-# 	echo "dropping existing virtualenv $existing_env"
-# 	pyenv virtualenv-delete -f $PROJECT_NAME
-# fi
-# pyenv install -s $CONTAINER_PYTHON_VERSION
-# pyenv rehash
-# pyenv virtualenv $CONTAINER_PYTHON_VERSION $PROJECT_NAME
-# 
-# existing_env=$(pyenv prefix $PROJECT_NAME)
-# echo "Re-created virtual env $existing_env $env_site_packages_path"
+if [ $? -eq 0 ]
+then 
+	echo "dropping existing virtualenv $existing_env"
+	pyenv virtualenv-delete -f $PROJECT_NAME
+fi
+pyenv install -s $CONTAINER_PYTHON_VERSION
+pyenv rehash
+pyenv virtualenv $CONTAINER_PYTHON_VERSION $PROJECT_NAME
+
+existing_env=$(pyenv prefix $PROJECT_NAME)
+echo "Re-created virtual env $existing_env $env_site_packages_path"
 env_site_packages_path=$(eval "$existing_env/bin/${GET_PYTHON_SITEPACKAGES_PATH}")
-# 
-# 
-# echo "Copying site packages"
-# id=$(docker create $PROJECT_PYTHON_IMAGE)
-# docker cp $id:$CONTAINER_SITEPACKAGES/. $env_site_packages_path
-# docker rm -v $id
-# 
+
+
+echo "Copying site packages"
+id=$(docker create $PROJECT_PYTHON_IMAGE)
+docker cp $id:$CONTAINER_SITEPACKAGES/. $env_site_packages_path
+docker rm -v $id
+
 # generating site-packages 
 cd $env_site_packages_path && ctags -R --languages=python . && cd -
 grep -v '/^ ' $env_site_packages_path/tags > $env_site_packages_path/tags2
 mv -f $env_site_packages_path/tags2 $env_site_packages_path/tags
 
-# echo "Installing Nvim deps"
-# dev_packages="pynvim \
-# python-language-server \
-# pylint \
-# flake8 \
-# autoflake \
-# black \
-# isort \
-# pylint-django \
-# pyls-black \
-# pyls-isort"
-# $existing_env/bin/pip install --force-reinstall $dev_packages
-# 
-# echo "Create executable nvim with python binary set"
-# AUTOGEN_SCRIPTS_DIR="${PWD}/autogen_scripts"
-# SCRIPT_NAME="nvim_${PROJECT_NAME}"
-# SCRIPT_PATH="${AUTOGEN_SCRIPTS_DIR}/${SCRIPT_NAME}"
-# 
-# mkdir -p $AUTOGEN_SCRIPTS_DIR
-# echo "#!/bin/bash
-# source $existing_env/bin/activate && ~/nvim-osx64/bin/nvim --cmd 'set tags+=$env_site_packages_path/tags' \$@" > "$SCRIPT_PATH"
-# chmod 0777 "$SCRIPT_PATH"
-# ln -sf $SCRIPT_PATH "/usr/local/bin/${SCRIPT_NAME}"
-# echo $SCRIPT_NAME
+echo "Installing Nvim deps"
+dev_packages="pynvim \
+python-language-server \
+pylint \
+flake8 \
+autoflake \
+black \
+isort \
+pylint-django \
+pyls-black \
+pyls-isort"
+$existing_env/bin/pip install --force-reinstall $dev_packages
+
+echo "Create executable nvim with python binary set"
+AUTOGEN_SCRIPTS_DIR="${PWD}/autogen_scripts"
+SCRIPT_NAME="nvim_${PROJECT_NAME}"
+SCRIPT_PATH="${AUTOGEN_SCRIPTS_DIR}/${SCRIPT_NAME}"
+
+mkdir -p $AUTOGEN_SCRIPTS_DIR
+echo "#!/bin/bash
+source $existing_env/bin/activate && ~/nvim-osx64/bin/nvim --cmd 'set tags+=$env_site_packages_path/tags' \$@" > "$SCRIPT_PATH"
+chmod 0777 "$SCRIPT_PATH"
+ln -sf $SCRIPT_PATH "/usr/local/bin/${SCRIPT_NAME}"
+echo $SCRIPT_NAME
