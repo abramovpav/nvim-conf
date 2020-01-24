@@ -11,7 +11,7 @@ CONTAINER_SITEPACKAGES=$(docker run --rm --name=tmp_for_pyenv --entrypoint=bash 
 echo "in-docker sitepackages path ${CONTAINER_SITEPACKAGES}"
 
 
-# Setting up python & virtualenv
+echo "Setting up python & virtualenv"
 existing_env=$(pyenv prefix $PROJECT_NAME)
 if [ $? -eq 0 ]
 then 
@@ -32,10 +32,19 @@ id=$(docker create $PROJECT_PYTHON_IMAGE)
 docker cp $id:$CONTAINER_SITEPACKAGES/. $env_site_packages_path
 docker rm -v $id
 
-# generating site-packages 
-cd $env_site_packages_path && ctags -R --languages=python . && cd -
-grep -v '/^ ' $env_site_packages_path/tags > $env_site_packages_path/tags2
-mv -f $env_site_packages_path/tags2 $env_site_packages_path/tags
+
+echo "Generating tags"
+GET_PYTHON_PATHS='import sys; [print(p) for p in sys.path if p and not p.endswith(".zip") and not "lib-dynload" in p]'
+tag_paths=()
+for python_path in $("${existing_env}/bin/python" -c "${GET_PYTHON_PATHS}"); do
+    echo "generating tags for ${python_path}"
+    cd $python_path && ctags -R --languages=python --exclude=site-packages --exclude=test . && cd - > /dev/null 2>&1
+    grep -v '/^ ' $python_path/tags > $python_path/tags2
+    mv -f $python_path/tags2 $python_path/tags > /dev/null 2>&1
+    ls -la $python_path/tags
+    tag_paths+=( "${python_path}/tags" )
+done
+tag_paths=$(IFS=","; echo "${tag_paths[*]}")
 
 echo "Installing Nvim deps"
 dev_packages="pynvim \
@@ -57,7 +66,7 @@ SCRIPT_PATH="${AUTOGEN_SCRIPTS_DIR}/${SCRIPT_NAME}"
 
 mkdir -p $AUTOGEN_SCRIPTS_DIR
 echo "#!/bin/bash
-source $existing_env/bin/activate && ~/nvim-osx64/bin/nvim --cmd 'set tags+=$env_site_packages_path/tags' \$@" > "$SCRIPT_PATH"
+source $existing_env/bin/activate && ~/nvim-osx64/bin/nvim --cmd 'set tags+=$tag_paths' \$@" > "$SCRIPT_PATH"
 chmod 0777 "$SCRIPT_PATH"
 ln -sf $SCRIPT_PATH "/usr/local/bin/${SCRIPT_NAME}"
 echo $SCRIPT_NAME
