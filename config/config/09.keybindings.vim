@@ -13,6 +13,8 @@ onoremap il :<c-u>normal! _vg_<cr>
 vnoremap P "0p
 vnoremap il :<c-u>normal! _vg_<cr>
 
+command! W :w
+
 
 " ========== LEADER ==========
 let mapleader = " "
@@ -26,11 +28,13 @@ nnoremap <leader>ve :tabnew ~/.config/nvim/config<cr>
 nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
 
 
-let g:which_key_map.m = {'name': '☰ Mode'}
+let g:which_key_map.m = {'name': '☰ MODE'}
 let g:which_key_map.m.s = 'spell'
 let g:which_key_map.m.t = 'tabbar toggle'
+let g:which_key_map.m.c = 'open clipboard'
 nnoremap <leader>ms :call SpellToggle()<cr>
 nnoremap <leader>mt :TagbarToggle<CR>
+nnoremap <leader>mc :tabnew .clipboard<CR>
 
 
 function IsQuickfixOpen()

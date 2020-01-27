@@ -34,7 +34,7 @@ docker rm -v $id
 
 
 echo "Generating tags"
-GET_PYTHON_PATHS='import sys; [print(p) for p in sys.path if p and not p.endswith(".zip") and not "lib-dynload" in p]'
+GET_PYTHON_PATHS='import site; import os; [print(p) for p in (site.getsitepackages() + [site.getusersitepackages(), os.path.dirname(os.__file__)])]'
 tag_paths=()
 for python_path in $("${existing_env}/bin/python" -c "${GET_PYTHON_PATHS}"); do
     echo "generating tags for ${python_path}"
