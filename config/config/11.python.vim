@@ -45,6 +45,7 @@ function PythonSpecifics()
   nnoremap <buffer> <expr> <localleader>loi ":!isort -rc -sl ".expand('%')." && autoflake --remove-all-unused-imports --in-place ".expand('%')." && isort ". expand('%')."<CR>:e<CR>"
   nnoremap <buffer> <silent> <localleader>lai :call AutoImport(expand('<cword>'))<CR>
   nnoremap <buffer> <localleader>lab obreakpoint()<C-c>
+  nnoremap <buffer> gd :call LanguageClient#textDocument_definition()<CR>
 endfunction
 
 autocmd FileType python :call PythonSpecifics()
