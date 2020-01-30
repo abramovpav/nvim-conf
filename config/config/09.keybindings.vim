@@ -88,6 +88,12 @@ let g:which_key_map.s.r = 'custom Rg opts'
 let g:which_key_map.s.t = 'tags'
 let g:which_key_map.s.w = 'exact words'
 let g:which_key_map.s.y = 'yanked'
+function InputParam(prompt_str)
+    call inputsave()
+    let g:name = input(a:prompt_str)
+    call inputrestore()
+    return g:name
+endfunction
 nnoremap <leader>sb :Buffers<cr>
 nnoremap <leader>sc :let @/=""<cr>
 nnoremap <leader>se :execute ':RgRaw --no-ignore-vcs -F "' . escape(InputParam("exact: "), '"#%') . '"'<cr>
@@ -99,12 +105,6 @@ nnoremap <leader>sw :execute ':RgRaw --no-ignore-vcs -F -w "' . escape(InputPara
 nnoremap <leader>sy /<C-r>"<cr>
 
 
-function InputParam(prompt_str)
-    call inputsave()
-    let g:name = input(a:prompt_str)
-    call inputrestore()
-    return g:name
-endfunction
 
 
 let g:which_key_map.l = { 'name' : '☰ LANGUAGE' }
