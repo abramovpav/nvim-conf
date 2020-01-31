@@ -90,9 +90,9 @@ let g:which_key_map.s.w = 'exact words'
 let g:which_key_map.s.y = 'yanked'
 function InputParam(prompt_str)
     call inputsave()
-    let g:name = input(a:prompt_str)
+    let l:search_str = input(a:prompt_str)
     call inputrestore()
-    return g:name
+    return l:search_str
 endfunction
 nnoremap <leader>sb :Buffers<cr>
 nnoremap <leader>sc :let @/=""<cr>
