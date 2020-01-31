@@ -33,7 +33,7 @@ nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
 let g:which_key_map.m = {'name': '☰ MODE'}
 let g:which_key_map.m.s = 'spell'
 let g:which_key_map.m.t = 'tabbar toggle'
-nnoremap <leader>ms :call SpellToggle()<cr>
+nnoremap <leader>ms :call SpellingToggle()<cr>
 nnoremap <leader>mt :TagbarToggle<CR>
 
 
