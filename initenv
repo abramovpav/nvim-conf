@@ -28,9 +28,10 @@ env_site_packages_path=$(eval "$existing_env/bin/${GET_PYTHON_SITEPACKAGES_PATH}
 
 
 echo "Copying site packages"
-id=$(docker create $PROJECT_PYTHON_IMAGE)
-docker cp $id:$CONTAINER_SITEPACKAGES/. $env_site_packages_path
-docker rm -v $id
+docker run --rm -v $env_site_packages_path:/tmp/mnt -u root --entrypoint= $PROJECT_PYTHON_IMAGE cp -R $CONTAINER_SITEPACKAGES/. /tmp/mnt
+# id=$(docker create $PROJECT_PYTHON_IMAGE)
+# docker cp $id:$CONTAINER_SITEPACKAGES/. $env_site_packages_path
+# docker rm -v $id
 
 
 echo "Generating tags"
@@ -65,8 +66,8 @@ SCRIPT_NAME="nvim_${PROJECT_NAME}"
 SCRIPT_PATH="${AUTOGEN_SCRIPTS_DIR}/${SCRIPT_NAME}"
 
 mkdir -p $AUTOGEN_SCRIPTS_DIR
-echo "#!/bin/bash
-source $existing_env/bin/activate && ~/nvim-osx64/bin/nvim --cmd 'set tags+=$tag_paths' \$@" > "$SCRIPT_PATH"
+echo "#! /bin/bash
+source $existing_env/bin/activate && ~/nvim-linux64/bin/nvim --cmd 'set tags+=$tag_paths' \$@" > "$SCRIPT_PATH"
 chmod 0777 "$SCRIPT_PATH"
-ln -sf $SCRIPT_PATH "/usr/local/bin/${SCRIPT_NAME}"
+sudo ln -sf $SCRIPT_PATH "/usr/local/bin/${SCRIPT_NAME}"
 echo $SCRIPT_NAME
