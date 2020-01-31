@@ -3,15 +3,17 @@
 " ========== GENERAL ==========
 inoremap <esc> <nop>
 inoremap jk <esc>
+inoremap JK <esc>
 " tnoremap <Esc> <C-\><C-n>
 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:call ncm2#manual_trigger()\<CR>"
-inoremap § <Tab>
-
+	
 onoremap il :<c-u>normal! _vg_<cr>
 vnoremap P "0p
 vnoremap il :<c-u>normal! _vg_<cr>
+" inoremap <c-1> <tab>
+
 
 command! W :w
 
@@ -131,7 +133,7 @@ let g:which_key_map.l.s.a = 'Add word'
 nnoremap <leader>lsa :SpellingAddWord<CR>
 
 let g:which_key_map.b = {'name': '☰ BUFFERS'}
-nnoremap <silent> <leader>bq :CloseHiddenBuffers<CR>
+nnoremap <silent> <leader>bq :Bdelete hidden<CR>
 let g:which_key_map.b.q = 'quit all'
 
 let g:which_key_map.c = {'name': '☰ COMMANDS'}

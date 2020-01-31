@@ -7,6 +7,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'jesseleite/vim-agriculture'
 
+" :Gblame
 Plug 'tpope/vim-fugitive'
 
 Plug 'bling/vim-airline'

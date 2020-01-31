@@ -4,7 +4,7 @@ colorscheme space_vim_theme
 set hlsearch incsearch
 set number
 set nowrap
-set signcolumn=yes:1
+set signcolumn=yes
 set t_Co=256
 set encoding=utf-8
 set laststatus=2
