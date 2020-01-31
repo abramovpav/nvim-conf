@@ -99,7 +99,7 @@ nnoremap <leader>sc :let @/=""<cr>
 nnoremap <leader>se :execute ':RgRaw --no-ignore-vcs -F "' . escape(InputParam("exact: "), '"#%') . '"'<cr>
 nnoremap <leader>sf :FZF<cr>
 nnoremap <leader>sr :execute ':RgRaw --no-ignore-vcs "' . escape(InputParam("regex: "), '"#%') . '"'<cr>
-nnoremap <leader>ss :execute ':RgRaw --no-ignore-vcs "' . escape(InputParam("custom opts: "), '"#%') . '"'
+nnoremap <leader>ss :execute ':RgRaw --no-ignore-vcs "' . escape(InputParam("custom opts: "), '"#%') . '" '<left>
 nnoremap <leader>st :Tags<cr>
 nnoremap <leader>sw :execute ':RgRaw --no-ignore-vcs -F -w "' . escape(InputParam("exact words: "), '"#%') . '"'<cr>
 nnoremap <leader>sy /<C-r>"<cr>
