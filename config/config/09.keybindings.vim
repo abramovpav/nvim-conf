@@ -33,10 +33,8 @@ nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
 let g:which_key_map.m = {'name': '☰ MODE'}
 let g:which_key_map.m.s = 'spell'
 let g:which_key_map.m.t = 'tabbar toggle'
-let g:which_key_map.m.c = 'open clipboard'
 nnoremap <leader>ms :call SpellToggle()<cr>
 nnoremap <leader>mt :TagbarToggle<CR>
-nnoremap <leader>mc :tabnew .clipboard<CR>
 
 
 function IsQuickfixOpen()
@@ -76,8 +74,10 @@ nnoremap <leader>tq :tabclose<CR>
 
 let g:which_key_map.j = { 'name' : '☰ JUMP' }
 let g:which_key_map.j.c = 'current buffer dir'
+let g:which_key_map.j.n = 'open notes'
 let g:which_key_map.j.r = 'pwd'
 nnoremap <leader>jc :e%:p:h<cr>
+nnoremap <leader>jn :tabnew .notes<CR>
 nnoremap <leader>jr :e.<cr>
 
 let g:which_key_map.s = { 'name' : '☰ SEARCH' }
@@ -86,23 +86,34 @@ let g:which_key_map.s.c = 'clear'
 let g:which_key_map.s.e = 'exact'
 let g:which_key_map.s.f = 'files'
 let g:which_key_map.s.r = 'regexp'
+let g:which_key_map.s.r = 'custom Rg opts'
 let g:which_key_map.s.t = 'tags'
 let g:which_key_map.s.w = 'exact words'
 let g:which_key_map.s.y = 'yanked'
+function InputParam(prompt_str)
+    call inputsave()
+    let l:search_str = input(a:prompt_str)
+    call inputrestore()
+    return l:search_str
+endfunction
 nnoremap <leader>sb :Buffers<cr>
 nnoremap <leader>sc :let @/=""<cr>
-nnoremap <leader>se :RgRaw<space>--no-ignore-vcs<space>-F<space>''<left>
+nnoremap <leader>se :execute ':RgRaw --no-ignore-vcs -F "' . escape(InputParam("exact: "), '"#%') . '"'<cr>
 nnoremap <leader>sf :FZF<cr>
-nnoremap <leader>sr :RgRaw<space>--no-ignore-vcs<space>
+nnoremap <leader>sr :execute ':RgRaw --no-ignore-vcs "' . escape(InputParam("regex: "), '"#%') . '"'<cr>
+nnoremap <leader>ss :execute ':RgRaw --no-ignore-vcs "' . escape(InputParam("custom opts: "), '"#%') . '" '<left>
 nnoremap <leader>st :Tags<cr>
-nnoremap <leader>sw :RgRaw<space>--no-ignore-vcs<space>-F<space>-w<space>''<left>
+nnoremap <leader>sw :execute ':RgRaw --no-ignore-vcs -F -w "' . escape(InputParam("exact words: "), '"#%') . '"'<cr>
 nnoremap <leader>sy /<C-r>"<cr>
+
+
 
 
 let g:which_key_map.l = { 'name' : '☰ LANGUAGE' }
 let g:which_key_map.l.a = 'add word'
 let g:which_key_map.l.d = 'go to definition'
 let g:which_key_map.l.m = 'make'
+" ALSO nnoremap gd IS DEFINED LOCALLY FOR BUFFERS
 nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
 nnoremap <leader>lm :Neomake<CR>
 

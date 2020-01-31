@@ -4,6 +4,7 @@ colorscheme space_vim_theme
 set hlsearch incsearch
 set number
 set nowrap
+set smartcase
 set signcolumn=yes
 set t_Co=256
 set encoding=utf-8
@@ -30,3 +31,4 @@ let g:tagbar_sort = 0
 
 let g:spell_enabled = 0
 let g:context_enabled = 0
+let g:loaded_sql_completion = 0
