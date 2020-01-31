@@ -5,6 +5,7 @@ set hlsearch incsearch
 set number
 set nowrap
 set smartcase
+set ignorecase
 set signcolumn=yes
 set t_Co=256
 set encoding=utf-8
