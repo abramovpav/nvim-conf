@@ -1,10 +1,10 @@
 #!/bin/bash
-brew install aspell
-brew install ripgrep
-brew install --HEAD universal-ctags/universal-ctags/universal-ctags
-brew install fd
+sudo apt-get install aspell
+sudo apt-get install ripgrep
+sudo apt-get install --HEAD universal-ctags/universal-ctags/universal-ctags
+sudo apt-get install fd
 
-curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos.tar.gz -o /tmp/nvim.tar.gz
+curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz -o /tmp/nvim.tar.gz
 tar -xzf /tmp/nvim.tar.gz -C ~/
 rm /tmp/nvim.tar.gz
 
@@ -17,14 +17,14 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 ln -sf $PWD/.pylintrc ~/.pylintrc
 ln -sf $PWD/pycodestyle ~/.config/pycodestyle
 
-ln -sf $PWD/aspell/spelling /usr/local/bin/spelling
+sudo ln -sf $PWD/aspell/spelling /usr/local/bin/spelling
 ln -sf $PWD/aspell/.aspell.en.prepl ~/.aspell.en.prepl
 ln -sf $PWD/aspell/.aspell.en.pws ~/.aspell.en.pws
 
 
 echo "Installing pyenv & pyenv virtualenv"
-brew install pyenv
-_1='export PYENV_ROOT=/usr/local/opt/pyenv'
+sudo apt-get install pyenv
+_1='export PYENV_ROOT=/home/pavel/.pyenv'
 eval $_1
 PYENV_VIRTUALENV_DIR=$(pyenv root)/plugins/pyenv-virtualenv
 if [ ! -d "$PYENV_VIRTUALENV_DIR" ]
@@ -57,7 +57,7 @@ fi
 
 echo "Setting up python & virtualenv"
 NVIM_PYTHON_ENV_NAME='nvim_python'
-CONTAINER_PYTHON_VERSION='3.6.9'
+CONTAINER_PYTHON_VERSION='3.7.6'
 existing_env=$(pyenv prefix $NVIM_PYTHON_ENV_NAME)
 if [ $? -eq 0 ]
 then
@@ -78,10 +78,10 @@ AUTOGEN_SCRIPTS_DIR="${PWD}/autogen_scripts"
 SCRIPT_NAME="init_pyvenv_and_run_nvim"
 SCRIPT_PATH="${AUTOGEN_SCRIPTS_DIR}/${SCRIPT_NAME}"
 mkdir -p $AUTOGEN_SCRIPTS_DIR
-echo "#!/bin/bash
-source $existing_env/bin/activate && ~/nvim-osx64/bin/nvim \$@" > "$SCRIPT_PATH"
+echo "#! /bin/bash
+source $existing_env/bin/activate && ~/nvim-linux64/bin/nvim \$@" > "$SCRIPT_PATH"
 chmod 0777 "$SCRIPT_PATH"
-ln -sf $SCRIPT_PATH "/usr/local/bin/nvim"
+sudo ln -sf $SCRIPT_PATH "/usr/local/bin/nvim"
 
 echo "Installing nvim plugins"
 nvim --headless +PlugInstall +PlugUpgrade +qa
