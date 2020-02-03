@@ -28,5 +28,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 Plug 'wellle/context.vim'
+Plug 'airblade/vim-gitgutter'
+
 call plug#end()
 
