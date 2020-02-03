@@ -33,3 +33,4 @@ let g:tagbar_sort = 0
 let g:spell_enabled = 0
 let g:context_enabled = 0
 let g:loaded_sql_completion = 0
+set updatetime=100
