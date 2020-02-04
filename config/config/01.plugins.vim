@@ -29,6 +29,9 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 Plug 'wellle/context.vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'thaerkh/vim-indentguides'
+Plug 'chrisbra/Colorizer'
+
 
 call plug#end()
 
