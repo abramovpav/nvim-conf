@@ -1,4 +1,4 @@
-personal_ws-1.1 en 200 
+personal_ws-1.1 en 206 
 del
 elif
 Ctrl
@@ -40,6 +40,7 @@ ctx
 activations
 augroup
 GBP
+svg
 str
 autocmd
 initializer
@@ -85,6 +86,7 @@ postgres
 desc
 gte
 bitor
+gmail
 neoformat
 incr
 twilio
@@ -92,6 +94,7 @@ SumOrNone
 functools
 dest
 attr
+img
 fillna
 Obligor
 auth
@@ -128,7 +131,7 @@ MinTrueOrAny
 serializer
 Tunes
 xlsxwriter
-BRAAVO
+braavo
 http
 declaratively
 conv
@@ -163,6 +166,7 @@ hrefs
 vnoremap
 enums
 strftime
+sref
 ToOne
 imessage
 iMessage
@@ -171,6 +175,7 @@ repr
 parametrized
 pks
 Opt
+png
 Ref
 kwargs
 expr
@@ -185,6 +190,7 @@ ceil
 orderrel
 OrderRel
 api
+mailto
 Factoring
 rrule
 CHF
