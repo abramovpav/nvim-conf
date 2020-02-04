@@ -9,6 +9,14 @@ let g:LanguageClient_serverCommands = {
     \ 'rust': ['rls'],
     \ }
 
+if executable('javascript-typescript-stdio')
+  let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
+"  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+else
+  echo "javascript-typescript-stdio not installed!\n"
+  :cq
+endif
+
 let g:neoformat_run_all_formatters = 1
 let g:neoformat_enabled_python = ['isort', 'black']
 let g:neomake_python_enabled_makers = ['flake8', 'pylint']
