@@ -34,3 +34,9 @@ let g:spell_enabled = 0
 let g:context_enabled = 0
 let g:loaded_sql_completion = 0
 set updatetime=100
+
+
+" Git Gutter Options
+
+let g:gitgutter_highlight_linenrs = 1
+let g:gitgutter_highlight_lines = 1
