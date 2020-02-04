@@ -1,5 +1,4 @@
 
-
 " ========== GENERAL ==========
 inoremap <esc> <nop>
 inoremap jk <esc>
@@ -113,9 +112,13 @@ let g:which_key_map.l = { 'name' : '☰ LANGUAGE' }
 let g:which_key_map.l.a = 'add word'
 let g:which_key_map.l.d = 'go to definition'
 let g:which_key_map.l.m = 'make'
+let g:which_key_map.l.r = 'rename'
+let g:which_key_map.l.i = 'type info'
 " ALSO nnoremap gd IS DEFINED LOCALLY FOR BUFFERS
 nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
 nnoremap <leader>lm :Neomake<CR>
+nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+nnoremap <leader>li :call LanguageClient#textDocument_hover()<CR>
 
 let g:which_key_map.l.a = { 'name' : '☰ Add' }
 let g:which_key_map.l.a.b = 'breakpoint'
@@ -134,6 +137,10 @@ let g:which_key_map.l.f = { 'name': '☰ Fix' }
 let g:which_key_map.l.f.a = 'all format'
 let g:which_key_map.l.f.f = 'format'
 let g:which_key_map.l.f.i = 'imports'
+let g:which_key_map.l.f.b = 'all black'
+let g:which_key_map.l.f.s = 'all isort'
+nnoremap <leader>lfb :!git diff --name-only --diff-filter=MA \| grep '.py' \| xargs black <CR>
+nnoremap <leader>lfs :!git diff --name-only --diff-filter=MA \| grep '.py' \| xargs isort <CR>
 nnoremap <leader>lfa :Neoformat<CR>
 
 let g:which_key_map.l.o = { 'name': '☰ Optimize' }
@@ -158,6 +165,16 @@ call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
+
+
 " ========== Terminal ==========
 " https://github.com/junegunn/fzf.vim/issues/544
 tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<C-\><C-n>"
+
+" ========== GitGutter ==========
+" https://github.com/airblade/vim-gitgutter
+let g:which_key_map.g = {'name': '☰ GIT_GUTTER'}
+let g:which_key_map.g.n = 'next hunk'
+let g:which_key_map.g.p = 'prev hunk'
+nnoremap <leader>gn :GitGutterNextHunk<cr>
+nnoremap <leader>gp :GitGutterPrevHunk<cr>
