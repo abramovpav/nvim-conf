@@ -30,7 +30,9 @@ Plug 'autozimu/LanguageClient-neovim', {
 Plug 'wellle/context.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'thaerkh/vim-indentguides'
-Plug 'chrisbra/Colorizer'
+Plug 'rrethy/vim-hexokinase', {
+    \ 'do': 'docker run -v $(pwd):/mnt -w /mnt golang:1.13 make hexokinase'
+    \ }
 
 
 call plug#end()

@@ -40,3 +40,13 @@ set updatetime=100
 
 let g:gitgutter_highlight_linenrs = 1
 let g:gitgutter_highlight_lines = 1
+
+
+" Hexokinase
+let g:Hexokinase_ftEnabled = []
+let g:Hexokinase_highlighters = ['backgroundfull']
+let g:Hexokinase_refreshEvents = ['TextChanged', 'InsertLeave']
+let g:Hexokinase_optInPatterns = [
+\     'full_hex', 'triple_hex', 'colour_names',
+\     'rgb', 'rgba', 'hsl', 'hsla',
+\ ]
