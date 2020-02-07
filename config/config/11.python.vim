@@ -39,6 +39,14 @@ function! AutoImport(name)
 endfunction
 
 
+function! OptimizeImports()
+    let fn = expand('%')
+    execute '!isort -rc -sl ' . fn
+    execute '!autoflake --remove-all-unused-imports --in-place ' . fn
+    Neoformat isort
+endfunction
+
+
 function PythonSpecifics()
   nnoremap <buffer> <localleader>lff :Neoformat black<CR>
   nnoremap <buffer> <localleader>lfi :Neoformat isort<CR>
@@ -46,6 +54,7 @@ function PythonSpecifics()
   nnoremap <buffer> <silent> <localleader>lai :call AutoImport(expand('<cword>'))<CR>
   nnoremap <buffer> <localleader>lab obreakpoint()<C-c>
   nnoremap <buffer> gd :call LanguageClient#textDocument_definition()<CR>
+   nnoremap <buffer> <silent> <LocalLeader>loi :silent call OptimizeImports()<CR>
 endfunction
 
 autocmd FileType python :call PythonSpecifics()

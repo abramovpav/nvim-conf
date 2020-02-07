@@ -114,6 +114,9 @@ let g:which_key_map.l.d = 'go to definition'
 let g:which_key_map.l.m = 'make'
 let g:which_key_map.l.r = 'rename'
 let g:which_key_map.l.i = 'type info'
+let g:which_key_map.l.o = { 'name': 'optimize' }
+let g:which_key_map.l.o.i = 'imports'
+
 " ALSO nnoremap gd IS DEFINED LOCALLY FOR BUFFERS
 nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
 nnoremap <leader>lm :Neomake<CR>
