@@ -179,5 +179,7 @@ tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<C-\><C-n>"
 let g:which_key_map.g = {'name': '☰ GIT_GUTTER'}
 let g:which_key_map.g.n = 'next hunk'
 let g:which_key_map.g.p = 'prev hunk'
+let g:which_key_map.g.u = 'undo hunk'
 nnoremap <leader>gn :GitGutterNextHunk<cr>
 nnoremap <leader>gp :GitGutterPrevHunk<cr>
+nnoremap <leader>gu :GitGutterUndoHunk<cr>
