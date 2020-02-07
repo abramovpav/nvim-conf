@@ -35,6 +35,7 @@ let g:context_enabled = 0
 let g:loaded_sql_completion = 0
 set updatetime=100
 
+set termguicolors
 
 " Git Gutter Options
 
