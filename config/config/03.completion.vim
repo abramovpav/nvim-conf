@@ -9,11 +9,25 @@ let g:LanguageClient_serverCommands = {
     \ 'rust': ['rls'],
     \ }
 
+let g:LanguageClient_rootMarkers = {
+\ 'css': ['braavo.html'],
+\ 'less': ['braavo.html'],
+\ }
+
 if executable('javascript-typescript-stdio')
   let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
 "  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
 else
   echo "javascript-typescript-stdio not installed!\n"
+  :cq
+endif
+
+if executable('css-languageserver')
+  let g:LanguageClient_serverCommands.less = ['css-languageserver', '--stdio']
+  let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
+"  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+else
+  echo "css-languageserver not installed!\n"
   :cq
 endif
 
@@ -31,6 +45,7 @@ let g:neomake_spelling_maker = {
 	\ }
 :call neomake#cmd#disable(g:)
 
+let g:gutentags_project_root = ['src']
 let g:gutentags_ctags_exclude = [
     \  '.git', '.mypy_cache', '.ipynb_checkpoints', '__pycache__',
     \  '*.min.{js,css}',
