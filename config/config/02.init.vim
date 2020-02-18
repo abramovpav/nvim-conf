@@ -40,7 +40,7 @@ set termguicolors
 " Git Gutter Options
 
 let g:gitgutter_highlight_linenrs = 1
-let g:gitgutter_highlight_lines = 1
+" let g:gitgutter_highlight_lines = 1
 
 
 " Hexokinase
