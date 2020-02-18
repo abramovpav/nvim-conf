@@ -34,7 +34,6 @@ Plug 'rrethy/vim-hexokinase', {
     \ 'do': 'docker run -v $(pwd):/mnt -w /mnt golang:1.13 make hexokinase'
     \ }
 Plug 'wakatime/vim-wakatime'
-Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
