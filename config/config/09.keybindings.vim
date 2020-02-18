@@ -89,20 +89,51 @@ let g:which_key_map.s.r = 'custom Rg opts'
 let g:which_key_map.s.t = 'tags'
 let g:which_key_map.s.w = 'exact words'
 let g:which_key_map.s.y = 'yanked'
-function InputParam(prompt_str)
+
+function InputStr(prompt_str)
     call inputsave()
-    let l:search_str = input(a:prompt_str)
+    let l:input_str =input(a:prompt_str)
     call inputrestore()
-    return l:search_str
+    let @i = l:input_str
+    return l:input_str
 endfunction
+function InputVimEscapedStr(prompt_str, more_symbols_to_escape)
+    let l:input_str = InputStr(a:prompt_str)
+    let l:symbols_to_escape = a:more_symbols_to_escape
+    " single quote is the exception
+    if stridx(l:symbols_to_escape, "'") != -1
+        let l:symbols_to_escape = substitute(l:symbols_to_escape, "'", "", "g")
+        let l:input_str = substitute(l:input_str, "'", "''", "g")
+    endif
+    let l:input_str = escape(l:input_str, '#%'.l:symbols_to_escape)
+    let @i = l:input_str
+    return l:input_str
+endfunction
+function RunRgWithOpts(command_suffix)
+    let l:command = 'rg --column --line-number --no-heading --color=always --sort=path ' . a:command_suffix
+    let l:fzf_args = [
+                \l:command,
+                \1,
+                \fzf#vim#with_preview(
+                    \'right:40%',
+                    \'ctrl-p'
+                \),
+                \0]
+    return call('fzf#vim#grep', l:fzf_args)
+endfunction
+function HistAddAndReturn(command_str)
+    :call histadd("cmd", a:command_str)
+    return a:command_str
+endfunction
+
+command! -bang -nargs=+ -complete=dir Rg call RunRgWithOpts(<q-args>)
+nnoremap <leader>sw :call InputVimEscapedStr(" words: ", "\"'")<cr>:<c-r>=HistAddAndReturn('Rg "<c-r>i" --no-ignore-vcs -F -w')<cr><cr>
+nnoremap <leader>se :call InputVimEscapedStr(" exact: ", "\"'")<cr>:<c-r>=HistAddAndReturn('Rg "<c-r>i" --no-ignore-vcs -F')<cr><cr>
+nnoremap <leader>ss :call InputVimEscapedStr("search: ", '"')<cr>:Rg "<c-r>i" --no-ignore-vcs<space>
 nnoremap <leader>sb :Buffers<cr>
 nnoremap <leader>sc :let @/=""<cr>
-nnoremap <leader>se :execute ':RgRaw --no-ignore-vcs -F "' . escape(InputParam("exact: "), '"#%') . '"'<cr>
 nnoremap <leader>sf :FZF<cr>
-nnoremap <leader>sr :execute ':RgRaw --no-ignore-vcs "' . escape(InputParam("regex: "), '"#%') . '"'<cr>
-nnoremap <leader>ss :execute ':RgRaw --no-ignore-vcs "' . escape(InputParam("custom opts: "), '"#%') . '" '<left>
 nnoremap <leader>st :Tags<cr>
-nnoremap <leader>sw :execute ':RgRaw --no-ignore-vcs -F -w "' . escape(InputParam("exact words: "), '"#%') . '"'<cr>
 nnoremap <leader>sy /<C-r>"<cr>
 
 
@@ -160,9 +191,13 @@ let g:which_key_map.b.q = 'quit all'
 let g:which_key_map.c = {'name': '☰ COMMANDS'}
 let g:which_key_map.c.f = 'copy file'
 let g:which_key_map.c.p = 'copy file path'
+let g:which_key_map.c.c = {'name': 'set settings'}
+let g:which_key_map.c.c.r = 'credentials'
+let g:which_key_map.c.c.l = 'clickhouse_config'
 nnoremap <leader>cf :!cp '%:p' '%:p:h/.%:e'<Left><Left><Left><Left><Left>
 nnoremap <silent> <leader>cp :let @0=@%<CR>:let @+=@%<CR>
-
+nnoremap <leader>ccr :call InputVimEscapedStr("new_env: ", '"')<cr>:tabnew<cr>:e /home/pavel/projects/braavo/aprenita/env_requisite/credentials.yml<CR>/current_env<CR>f:wyiw/## start <C-r>"<cr><Home><C-v>/## end <C-r>"<cr><Home>I# <Esc>/current_env<cr>f:wc$<C-r>i<Esc>/## start <C-r>i<Cr><Home><C-v>/## end <C-r>i<cr><Home>lx:w<cr>:echo '<C-r>i was installed in credentials.yml'<cr>:tabclose<cr>
+nnoremap <leader>ccl :call InputVimEscapedStr("new_env: ", '"')<cr>:tabnew<cr>:e /home/pavel/projects/braavo/aprenita/env_requisite/clickhouse_config.yml<CR>/current_env<CR>f:wyiw/## start <C-r>"<cr><Home><C-v>/## end <C-r>"<cr><Home>I# <Esc>/current_env<cr>f:wc$<C-r>i<Esc>/## start <C-r>i<Cr><Home><C-v>/## end <C-r>i<cr><Home>lx:w<cr>:echo '<C-r>i env was installed in clickhouse_config.yml'<cr>:tabclose<cr>
 
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
@@ -180,6 +215,8 @@ let g:which_key_map.g = {'name': '☰ GIT_GUTTER'}
 let g:which_key_map.g.n = 'next hunk'
 let g:which_key_map.g.p = 'prev hunk'
 let g:which_key_map.g.u = 'undo hunk'
+let g:which_key_map.g.v = 'preview hunk'
 nnoremap <leader>gn :GitGutterNextHunk<cr>
 nnoremap <leader>gp :GitGutterPrevHunk<cr>
 nnoremap <leader>gu :GitGutterUndoHunk<cr>
+nnoremap <leader>gv :GitGutterPreviewHunk<cr>
