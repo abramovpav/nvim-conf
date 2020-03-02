@@ -68,8 +68,10 @@ nnoremap <leader>wl <C-w>l
 let g:which_key_map.t = { 'name' : '☰ TAB' }
 let g:which_key_map.t.n = 'new'
 let g:which_key_map.t.q = 'quit'
+let g:which_key_map.t.c = 'open current file in a new tab'
 nnoremap <leader>tn :tabnew<CR>
 nnoremap <leader>tq :tabclose<CR>
+nnoremap <leader>tc :tabnew %<CR>
 
 let g:which_key_map.j = { 'name' : '☰ JUMP' }
 let g:which_key_map.j.c = 'current buffer dir'
@@ -211,12 +213,16 @@ tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<C-\><C-n>"
 
 " ========== GitGutter ==========
 " https://github.com/airblade/vim-gitgutter
-let g:which_key_map.g = {'name': '☰ GIT_GUTTER'}
+let g:which_key_map.g = {'name': '☰ GIT'}
 let g:which_key_map.g.n = 'next hunk'
 let g:which_key_map.g.p = 'prev hunk'
 let g:which_key_map.g.u = 'undo hunk'
 let g:which_key_map.g.v = 'preview hunk'
+let g:which_key_map.g.d = 'show diff'
+let g:which_key_map.g.m = 'merge tool'
 nnoremap <leader>gn :GitGutterNextHunk<cr>
 nnoremap <leader>gp :GitGutterPrevHunk<cr>
 nnoremap <leader>gu :GitGutterUndoHunk<cr>
 nnoremap <leader>gv :GitGutterPreviewHunk<cr>
+nnoremap <leader>gd :Gdiffsplit<cr>
+nnoremap <leader>gm :Git mergetool<cr>
