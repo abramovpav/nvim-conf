@@ -226,3 +226,24 @@ nnoremap <leader>gu :GitGutterUndoHunk<cr>
 nnoremap <leader>gv :GitGutterPreviewHunk<cr>
 nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gm :Git mergetool<cr>
+
+" debug
+let g:which_key_map.d = {'name': '☰ DEBUG'}
+let g:which_key_map.d.a = 'add breakpoint'
+let g:which_key_map.d.d = 'delete breakpoint'
+let g:which_key_map.d.D = 'delete breakpoint in buffer'
+let g:which_key_map.d.C = 'delete all breakpoints'
+let g:which_key_map.d.l = 'show breakpoint'
+let g:which_key_map.d.c = 'copy breakpoint'
+let g:which_key_map.d.R = 'run script'
+let g:which_key_map.d.r = 'run django script'
+let g:which_key_map.d.s = 'run django server'
+nnoremap <silent><leader>da :call AddBreakpoint()<cr>
+nnoremap <silent><leader>dd :call DeleteBreakpoint()<cr>
+nnoremap <silent><leader>dD :call DeleteBufferBreakpoints()<cr>
+nnoremap <silent><leader>dC :call DeleteAllBreakpoints()<cr>
+nnoremap <silent><leader>dl :call ShowBreakpoints()<cr>
+nnoremap <silent><leader>dc :silent let @* = PDBGetBreakpoint(v:null, v:null)<cr>
+nnoremap <silent><leader>dR :PDBRunDockerScript<cr>i
+nnoremap <silent><leader>dr :PDBRunDockerDjangoScript<cr>i
+nnoremap <silent><leader>ds :PDBRunDockerDjangoServer tabnew<cr>gT
