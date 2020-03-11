@@ -10,6 +10,8 @@ Plug 'jesseleite/vim-agriculture'
 " :Gblame
 Plug 'tpope/vim-fugitive'
 
+Plug 'junegunn/gv.vim'
+
 Plug 'bling/vim-airline'
 Plug 'liuchengxu/space-vim-theme'
 Plug 'liuchengxu/vim-which-key'
