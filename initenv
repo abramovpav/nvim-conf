@@ -28,10 +28,10 @@ env_site_packages_path=$(eval "$existing_env/bin/${GET_PYTHON_SITEPACKAGES_PATH}
 
 
 echo "Copying site packages"
-docker run --rm -v $env_site_packages_path:/tmp/mnt -u root --entrypoint= $PROJECT_PYTHON_IMAGE cp -R $CONTAINER_SITEPACKAGES/. /tmp/mnt
-# id=$(docker create $PROJECT_PYTHON_IMAGE)
-# docker cp $id:$CONTAINER_SITEPACKAGES/. $env_site_packages_path
-# docker rm -v $id
+#docker run --rm -v $env_site_packages_path:/tmp/mnt -u root --entrypoint= $PROJECT_PYTHON_IMAGE cp -R $CONTAINER_SITEPACKAGES/. /tmp/mnt
+id=$(docker create $PROJECT_PYTHON_IMAGE)
+docker cp $id:$CONTAINER_SITEPACKAGES/. $env_site_packages_path
+docker rm -v $id
 
 
 echo "Generating tags"
@@ -46,6 +46,7 @@ for python_path in $("${existing_env}/bin/python" -c "${GET_PYTHON_PATHS}"); do
     tag_paths+=( "${python_path}/tags" )
 done
 tag_paths=$(IFS=","; echo "${tag_paths[*]}")
+echo "tags_paths ${tag_paths}"
 
 echo "Installing Nvim deps"
 dev_packages="pynvim \

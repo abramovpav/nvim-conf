@@ -22,14 +22,14 @@ else
   :cq
 endif
 
-if executable('css-languageserver')
-  let g:LanguageClient_serverCommands.less = ['css-languageserver', '--stdio']
-  let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
-"  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
-else
-  echo "css-languageserver not installed!\n"
-  :cq
-endif
+"if executable('css-languageserver')
+"  let g:LanguageClient_serverCommands.less = ['css-languageserver', '--stdio']
+"  let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
+""  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+"else
+"  echo "css-languageserver not installed!\n"
+"  :cq
+"endif
 
 let g:neoformat_run_all_formatters = 1
 let g:neoformat_enabled_python = ['isort', 'black']
