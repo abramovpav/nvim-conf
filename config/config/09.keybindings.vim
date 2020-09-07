@@ -7,7 +7,7 @@ inoremap JK <esc>
 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:call ncm2#manual_trigger()\<CR>"
-	
+
 onoremap il :<c-u>normal! _vg_<cr>
 vnoremap P "0p
 vnoremap il :<c-u>normal! _vg_<cr>
@@ -60,10 +60,19 @@ let g:which_key_map.w.h = 'switch to left'
 let g:which_key_map.w.j = 'switch to down'
 let g:which_key_map.w.k = 'switch to up'
 let g:which_key_map.w.l = 'switch to right'
+let g:which_key_map.w.s = { 'name': '☰ Split size managent' }
+let g:which_key_map.w.s.l = 'Increase horizontally +5'
+let g:which_key_map.w.s.h = 'Increase vertically +5'
+let g:which_key_map.w.s.j = 'Decrease vertically -5'
 nnoremap <leader>wh <C-w>h
 nnoremap <leader>wj <C-w>j
 nnoremap <leader>wk <C-w>k
 nnoremap <leader>wl <C-w>l
+nnoremap <silent> <leader>wsl :vertical resize +5<CR>
+nnoremap <silent> <leader>wsh :vertical resize -5<CR>
+nnoremap <silent> <leader>wsk :resize +5<CR>
+nnoremap <silent> <leader>wsj :resize -5<CR>
+nnoremap <silent> <leader>wse <C-w>=
 
 let g:which_key_map.t = { 'name' : '☰ TAB' }
 let g:which_key_map.t.n = 'new'
@@ -107,7 +116,7 @@ function InputVimEscapedStr(prompt_str, more_symbols_to_escape)
         let l:symbols_to_escape = substitute(l:symbols_to_escape, "'", "", "g")
         let l:input_str = substitute(l:input_str, "'", "''", "g")
     endif
-    let l:input_str = escape(l:input_str, '#%'.l:symbols_to_escape)
+    let l:input_str = escape(l:input_str, '#$%'.l:symbols_to_escape)
     let @i = l:input_str
     return l:input_str
 endfunction
@@ -196,10 +205,15 @@ let g:which_key_map.c.p = 'copy file path'
 let g:which_key_map.c.c = {'name': 'set settings'}
 let g:which_key_map.c.c.r = 'credentials'
 let g:which_key_map.c.c.l = 'clickhouse_config'
+let g:which_key_map.c.R = 'Refresh buffers & regenerate local tags'
+let g:which_key_map.c.T = 'Refresh outer tags'
 nnoremap <leader>cf :!cp '%:p' '%:p:h/.%:e'<Left><Left><Left><Left><Left>
 nnoremap <silent> <leader>cp :let @0=@%<CR>:let @+=@%<CR>
-nnoremap <leader>ccr :call InputVimEscapedStr("new_env: ", '"')<cr>:tabnew<cr>:e /home/pavel/projects/braavo/aprenita/env_requisite/credentials.yml<CR>/current_env<CR>f:wyiw/## start <C-r>"<cr><Home><C-v>/## end <C-r>"<cr><Home>I# <Esc>/current_env<cr>f:wc$<C-r>i<Esc>/## start <C-r>i<Cr><Home><C-v>/## end <C-r>i<cr><Home>lx:w<cr>:echo '<C-r>i was installed in credentials.yml'<cr>:tabclose<cr>
-nnoremap <leader>ccl :call InputVimEscapedStr("new_env: ", '"')<cr>:tabnew<cr>:e /home/pavel/projects/braavo/aprenita/env_requisite/clickhouse_config.yml<CR>/current_env<CR>f:wyiw/## start <C-r>"<cr><Home><C-v>/## end <C-r>"<cr><Home>I# <Esc>/current_env<cr>f:wc$<C-r>i<Esc>/## start <C-r>i<Cr><Home><C-v>/## end <C-r>i<cr><Home>lx:w<cr>:echo '<C-r>i env was installed in clickhouse_config.yml'<cr>:tabclose<cr>
+nnoremap <leader>ccr :call InputVimEscapedStr("new_env: ", '"')<cr>:tabnew<cr>:e /home/pavel/projects/braavo/aprenita/env_requisite/credentials.yml<CR>/current_env<CR>f:wv$hy/## start <C-r>"<cr><Home><C-v>/## end <C-r>"<cr><Home>I# <Esc>/current_env<cr>f:wc$<C-r>i<Esc>/## start <C-r>i<Cr><Home><C-v>/## end <C-r>i<cr><Home>lx:w<cr>:echo '<C-r>i was installed in credentials.yml'<cr>:tabclose<cr>
+nnoremap <leader>ccl :call InputVimEscapedStr("new_env: ", '"')<cr>:tabnew<cr>:e /home/pavel/projects/braavo/aprenita/env_requisite/clickhouse_config.yml<CR>/current_env<CR>f:wv$hy/## start <C-r>"<cr><Home><C-v>/## end <C-r>"<cr><Home>I# <Esc>/current_env<cr>f:wc$<C-r>i<Esc>/## start <C-r>i<Cr><Home><C-v>/## end <C-r>i<cr><Home>lx:w<cr>:echo '<C-r>i env was installed in clickhouse_config.yml'<cr>:tabclose<cr>
+nnoremap <leader>cR :syntax off<CR>:let _current_buffer=bufnr("%")<CR>:bufdo execute ":e"<CR>:b <c-r>=_current_buffer<CR><CR>:GutentagsUpdate!<CR>:syntax on<CR>
+nnoremap <leader>cf :!cp '%:p' '%:p:h/.%:e'<Left><Left><Left><Left><Left>
+nnoremap <leader>cT :call GenerateSitePackageTags()<CR>
 
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
