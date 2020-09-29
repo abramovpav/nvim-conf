@@ -4,7 +4,7 @@ set backspace=indent,eol,start
 set guifont=Monaco:h14
 colorscheme space_vim_theme
 set hlsearch incsearch
-set number
+set relativenumber
 set nowrap
 set smartcase
 set ignorecase
@@ -28,6 +28,8 @@ set clipboard=unnamed
 let g:netrw_altv = 1
 let g:netrw_alto = 1
 
+set exrc
+set secure
 let g:tagbar_foldlevel = 0
 let g:tagbar_autoclose = 1
 let g:tagbar_sort = 0
@@ -46,10 +48,19 @@ let g:gitgutter_highlight_linenrs = 1
 
 
 " Hexokinase
-let g:Hexokinase_ftEnabled = []
+let g:Hexokinase_ftEnabled = ['less', 'css', 'svg', 'html']
 let g:Hexokinase_highlighters = ['backgroundfull']
-let g:Hexokinase_refreshEvents = ['TextChanged', 'InsertLeave']
+" let g:Hexokinase_refreshEvents = ['TextChanged', 'InsertLeave']
 let g:Hexokinase_optInPatterns = [
 \     'full_hex', 'triple_hex', 'colour_names',
 \     'rgb', 'rgba', 'hsl', 'hsla',
 \ ]
+
+function! RemoveTrailingWhitespaces()
+    let search = @/
+    let view = winsaveview()
+    silent! %s/\s\+$//e
+    let @/=search
+    call winrestview(view)
+endfunction
+autocmd! BufWritePre * call RemoveTrailingWhitespaces()

@@ -22,14 +22,14 @@ else
   :cq
 endif
 
-if executable('css-languageserver')
-  let g:LanguageClient_serverCommands.less = ['css-languageserver', '--stdio']
-  let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
-"  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
-else
-  echo "css-languageserver not installed!\n"
-  :cq
-endif
+"if executable('css-languageserver')
+"  let g:LanguageClient_serverCommands.less = ['css-languageserver', '--stdio']
+"  let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
+""  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+"else
+"  echo "css-languageserver not installed!\n"
+"  :cq
+"endif
 
 let g:neoformat_run_all_formatters = 1
 let g:neoformat_enabled_python = ['isort', 'black']
@@ -53,3 +53,28 @@ let g:gutentags_ctags_exclude = [
 let g:gutentags_generate_on_new = 0
 let g:gutentags_generate_on_missing = 0
 
+function! RefreshSitePackageTags()
+    let l:text =<< trim END
+    import sys
+    bad_endings = (".zip", "dynload")
+    for path in sys.path:
+        if path and any(path.endswith(ending) for ending in bad_endings):
+            continue
+        print(path)
+    END
+    let l:sitepackages = systemlist('python -', l:text)
+    for path in l:sitepackages
+        if stridx(&tags, path) == -1
+            let &tags = &tags.path."/tags,"
+        endif
+    endfor
+    return l:sitepackages
+endfunction
+autocmd FileType python :call RefreshSitePackageTags()
+
+function! GenerateSitePackageTags()
+    let l:sitepackages = RefreshSitePackageTags()
+    for path in l:sitepackages
+        call system("bash -s", "pushd ".path." && rm -f tags && ctags -R --languages=python --exclude=site-packages --exclude=test && sed -i '/\/\^ /d' tags && popd")
+    endfor
+endfunction

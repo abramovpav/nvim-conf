@@ -1,8 +1,9 @@
 #!/bin/bash
-sudo apt-get install aspell
-sudo apt-get install ripgrep
-sudo apt-get install --HEAD universal-ctags/universal-ctags/universal-ctags
-sudo apt-get install fd
+sudo apt-get install -y aspell
+sudo apt-get install -y ripgrep
+sudo snap install -y universal-ctags
+# sudo apt-get install -y exuberant-ctag
+sudo apt install -y fd-find
 
 curl -L https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz -o /tmp/nvim.tar.gz
 tar -xzf /tmp/nvim.tar.gz -C ~/
@@ -75,7 +76,7 @@ sudo apt-get install npm
 npm install -g javascript-typescript-langserver
 
 echo "Installing Nvim deps"
-dev_packages="pynvim"
+dev_packages="wheel pynvim"
 $existing_env/bin/python -m pip install $dev_packages
 
 echo "Create executable nvim with python binary set"
