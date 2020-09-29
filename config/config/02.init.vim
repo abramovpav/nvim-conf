@@ -1,3 +1,5 @@
+set exrc
+set secure
 set backspace=indent,eol,start
 set guifont=Monaco:h14
 colorscheme space_vim_theme
