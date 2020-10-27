@@ -1,7 +1,0 @@
-  nfsmount_aprenita:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
-      device: ":/System/Volumes/Data/Users/westandskif/Work/aprenita"
-
