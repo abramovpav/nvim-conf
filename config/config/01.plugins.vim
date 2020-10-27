@@ -1,5 +1,5 @@
 call plug#begin('~/.local/share/nvim/plugged')
-
+Plug 'darfink/vim-plist'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
 
@@ -30,13 +30,17 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 Plug 'wellle/context.vim'
+Plug 'ruslan-savina/spelling'
 Plug 'airblade/vim-gitgutter'
 Plug 'thaerkh/vim-indentguides'
+
+Plug 'farfanoide/inflector.vim'
+
 Plug 'rrethy/vim-hexokinase', {
     \ 'do': 'docker run -v $(pwd):/mnt -w /mnt golang:1.13 make hexokinase'
     \ }
+
 Plug 'wakatime/vim-wakatime'
-Plug 'ruslan-savina/spelling'
+
 
 call plug#end()
-

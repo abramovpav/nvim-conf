@@ -38,23 +38,17 @@ function! AutoImport(name)
     \ }))
 endfunction
 
-
-function! OptimizeImports()
-    let fn = expand('%')
-    execute '!isort -rc -sl ' . fn
-    execute '!autoflake --remove-all-unused-imports --in-place ' . fn
-    Neoformat isort
-endfunction
-
-
 function PythonSpecifics()
   nnoremap <buffer> <localleader>lff :Neoformat black<CR>
   nnoremap <buffer> <localleader>lfi :Neoformat isort<CR>
+  nnoremap <buffer> <localleader>lmq :Neomake flake8<CR>
   nnoremap <buffer> <expr> <localleader>loi ":!isort -rc -sl ".expand('%')." && autoflake --remove-all-unused-imports --in-place ".expand('%')." && isort ". expand('%')."<CR>:e<CR>"
   nnoremap <buffer> <silent> <localleader>lai :call AutoImport(expand('<cword>'))<CR>
   nnoremap <buffer> <localleader>lab obreakpoint()<C-c>
   nnoremap <buffer> gd :call LanguageClient#textDocument_definition()<CR>
-   nnoremap <buffer> <silent> <LocalLeader>loi :silent call OptimizeImports()<CR>
 endfunction
 
 autocmd FileType python :call PythonSpecifics()
+" let g:polyglot_disabled = ['python-indent']
+let g:python_pep8_indent_searchpair_timeout = 20
+

@@ -8,19 +8,21 @@ let g:LanguageClient_serverCommands = {
     \ 'python': ['pyls'],
     \ 'rust': ['rls'],
     \ }
+let g:LanguageClient_loggingFile =  expand('~/.local/share/nvim/LanguageClient.log')
+let g:LanguageClient_serverStderr = expand('~/.local/share/nvim/LanguageServer.log')
 
 let g:LanguageClient_rootMarkers = {
 \ 'css': ['braavo.html'],
 \ 'less': ['braavo.html'],
 \ }
 
-if executable('javascript-typescript-stdio')
-  let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
-"  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
-else
-  echo "javascript-typescript-stdio not installed!\n"
-  :cq
-endif
+" if executable('javascript-typescript-stdio')
+"   let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
+" "  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+" else
+"   echo "javascript-typescript-stdio not installed!\n"
+"   :cq
+" endif
 
 "if executable('css-languageserver')
 "  let g:LanguageClient_serverCommands.less = ['css-languageserver', '--stdio']
@@ -48,10 +50,35 @@ let g:neomake_spelling_maker = {
 let g:gutentags_project_root = ['src']
 let g:gutentags_ctags_exclude = [
     \  '.git', '.mypy_cache', '.ipynb_checkpoints', '__pycache__',
-    \  '*.min.{js,css}',
+    \  '*.min.{js,css}', 'build/*',
     \ ]
 let g:gutentags_generate_on_new = 0
 let g:gutentags_generate_on_missing = 0
+
+
+let g:neomake_git_diff_config = {
+			\ 'py': {'filetype': 'python', 'makers': ['flake8']},
+			\}
+function! NeomakeGitDiff()
+	let ext_patterns = map(keys(g:neomake_git_diff_config), {index, val -> '.'.val.'$'})
+    let git_files = systemlist("git diff --name-only --cached --diff-filter=AM | grep '".join(ext_patterns, "|")."'")
+	let l:maker_name_to_maker = {}
+	for changed_file in git_files
+		let ext = fnamemodify(changed_file, ':e')
+		let ext_config = g:neomake_git_diff_config[ext]
+		let changed_file_filetype = ext_config['filetype']
+		let needed_makers = ext_config['makers']
+		for maker_name in needed_makers
+			if !has_key(maker_name_to_maker, maker_name)
+				let l:maker_name_to_maker[maker_name] = deepcopy(neomake#GetMaker(maker_name, changed_file_filetype))
+				let l:maker_name_to_maker[maker_name].append_file = 0
+			endif
+			let maker = l:maker_name_to_maker[maker_name]
+			call add(maker.args, changed_file)
+		endfor
+	endfor
+    call neomake#Make({'enabled_makers': values(l:maker_name_to_maker)})
+endfunction
 
 function! RefreshSitePackageTags()
     let l:text =<< trim END
