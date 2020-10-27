@@ -37,7 +37,6 @@ let g:tagbar_foldlevel = 0
 let g:tagbar_autoclose = 1
 let g:tagbar_sort = 0
 
-let g:spell_enabled = 0
 let g:context_enabled = 0
 let g:context_presenter = 'preview'
 let g:loaded_sql_completion = 0
@@ -69,3 +68,6 @@ function! RemoveTrailingWhitespaces()
     call winrestview(view)
 endfunction
 autocmd! BufWritePre * call RemoveTrailingWhitespaces()
+let g:qf_modifiable = 1
+let g:qf_join_changes = 1
+let g:qf_write_changes = 0

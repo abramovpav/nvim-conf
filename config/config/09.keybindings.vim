@@ -15,6 +15,12 @@ inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-\>\<C-O>:call ncm2#
 onoremap il :<c-u>normal! _vg_<cr>
 vnoremap P "0p
 vnoremap il :<c-u>normal! _vg_<cr>
+nnoremap <F1> <c-y>
+nnoremap <F2> <c-e>
+nnoremap <F3> <c-u>
+nnoremap <F4> <c-d>
+nnoremap <F5> zH
+nnoremap <F6> zL
 vnoremap <F1> <c-y>
 vnoremap <F2> <c-e>
 vnoremap <F3> <c-u>
@@ -34,16 +40,16 @@ let g:which_key_map =  {}
 let g:which_key_map.v = { 'name' : '☰ NVIM' }
 let g:which_key_map.v.e = 'Edit configs'
 let g:which_key_map.v.s = 'Source configs'
-let g:which_key_map.v.c = 'Cache session'
 let g:which_key_map.v.q = 'Quit'
+let g:which_key_map.v.C = 'Cache session'
 let g:which_key_map.v.Q = 'Quit and make session'
-let g:which_key_map.v.r = 'Restore session'
+let g:which_key_map.v.R = 'Restore session'
 nnoremap <leader>ve :tabnew ~/.config/nvim/config<cr>
 nnoremap <leader>vs :source ~/.config/nvim/init.vim<cr>
-nnoremap <leader>vc :mksession! .s.vim<cr>
 nnoremap <leader>vq :qa<cr>
+nnoremap <leader>vC :mksession! .s.vim<cr>
 nnoremap <leader>vQ :mksession! .s.vim<cr>:qa<cr>
-nnoremap <leader>vr :source .s.vim<cr>
+nnoremap <leader>vR :source .s.vim<cr>
 
 
 let g:which_key_map.m = {'name': '☰ MODE'}
@@ -136,12 +142,12 @@ let g:which_key_map.s.c = 'clear'
 let g:which_key_map.s.e = 'exact'
 let g:which_key_map.s.f = 'files'
 let g:which_key_map.s.h = 'history'
-let g:which_key_map.s.i = 'from input'
-let g:which_key_map.s.r = 'custom Rg opts'
-let g:which_key_map.s.r = 'regexp'
+let g:which_key_map.s.s = 'exact search selection'
+let g:which_key_map.s.C = 'custom Rg opts'
 let g:which_key_map.s.t = 'tags'
 let g:which_key_map.s.w = 'exact words'
-let g:which_key_map.s.y = 'yanked'
+let g:which_key_map.s.p = '"+" locally'
+let g:which_key_map.s.P = '"+" globally'
 
 function InputStr(prompt_str)
     call inputsave()
@@ -160,12 +166,11 @@ function VimEscape(str, symbols_to_escape)
     endif
     return escape(l:str, l:_symbols_to_escape)
 endfunction
-function InputVimEscapedStr(prompt_str, more_symbols_to_escape)
-    let l:input_str = InputStr(a:prompt_str)
-    let l:input_str = VimEscape(l:input_str, "#$%".a:more_symbols_to_escape)
-    let @i = l:input_str
-    return l:input_str
+function HistAddAndReturn(command_str)
+    :call histadd("cmd", a:command_str)
+    return a:command_str
 endfunction
+
 function RunRgWithOpts(command_suffix)
     let l:command = 'rg --column --line-number --no-heading --color=always --sort=path ' . a:command_suffix
     let l:fzf_args = [
@@ -181,10 +186,54 @@ function RunRgWithOpts(command_suffix)
                 \0]
     return call('fzf#vim#grep', l:fzf_args)
 endfunction
-function HistAddAndReturn(command_str)
-    :call histadd("cmd", a:command_str)
-    return a:command_str
+
+" FOR <leader>ss binding to work with vim movements
+function! RgExactSearch(type, ...)
+  let sel_save = &selection
+  let &selection = "inclusive"
+
+  if a:0  " Invoked from Visual mode, use '< and '> marks.
+    silent exe "normal! `<" . a:type . "`>\"iy"
+  elseif a:type == 'line'
+    silent exe "normal! '[V']\"iy"
+  elseif a:type == 'block'
+    silent exe "normal! `[\<C-V>`]\"iy"
+  else
+    silent exe "normal! `[v`]\"iy"
+  endif
+
+  let @i=VimEscape(@i, "\\$#%\"`")
+  silent execute HistAddAndReturn('Rg "'.@i.'" --no-ignore-vcs -F')
+
+  let &selection = sel_save
 endfunction
+
+command! -bang -nargs=+ -complete=dir Rg call RunRgWithOpts(<q-args>)
+
+let g:which_key_map.s.s = 'exact search selection'
+nnoremap <silent><leader>ss :set operatorfunc=RgExactSearch<CR>g@
+vnoremap <silent><leader>ss :<C-U>call RgExactSearch(visualmode(), 1)<CR>
+
+let g:which_key_map.s.p = '"+" locally'
+nnoremap <leader>sp /<c-r>=VimEscape(substitute(@+, '\n\+$', '', ''), ".* \\/[]~")<cr>
+let g:which_key_map.s.P = '"+" globally'
+nnoremap <silent><leader>sP :let @i=VimEscape(@+, "\\$#%\"'`")<cr>:<c-r>=HistAddAndReturn('Rg "<c-r>i" --no-ignore-vcs -F')<cr><cr>
+
+let g:which_key_map.s.e = 'exact'
+nnoremap <silent><leader>se :let @i=VimEscape(InputStr(" exact: "), "\\$#%\"'`")<cr>:<c-r>=HistAddAndReturn('Rg "<c-r>i" --no-ignore-vcs -F')<cr><cr>
+let g:which_key_map.s.w = 'exact words'
+nnoremap <silent><leader>sw :let @i=VimEscape(InputStr(" words: "), "\\$#%\"'`")<cr>:<c-r>=HistAddAndReturn('Rg "<c-r>i" --no-ignore-vcs -F -w')<cr><cr>
+
+let g:which_key_map.s.c = 'custom Rg opts'
+nnoremap <leader>sC :let @i=VimEscape(InputStr("search: "), "\\$#%\"'`")<cr>:<c-r>=HistAddAndReturn('Rg "<c-r>i" --no-ignore-vcs -S')<cr>
+
+
+nnoremap <leader>sb :Buffers<cr>
+nnoremap <leader>sf :FZF<cr>
+nnoremap <leader>sh :History<cr>
+nnoremap <leader>st :Tags<cr>
+nnoremap <leader>sc :let @/=""<cr>
+
 
 function s:FilterList(list, str, leave)
     if a:leave
@@ -210,23 +259,9 @@ function FilterQfLocList(str, leave)
   endif
 endfunction
 
-nnoremap <leader>qf :call InputVimEscapedStr("lines to leave: ", "\"'")<cr>:<c-r>=HistAddAndReturn('call FilterQfLocList("<c-r>i", 1)')<cr><cr>
-nnoremap <leader>qe :call InputVimEscapedStr("lines to exclude: ", "\"'")<cr>:<c-r>=HistAddAndReturn('call FilterQfLocList("<c-r>i", 0)')<cr><cr>
-nnoremap <leader>qd :call setqflist([], ' ', {'lines' : systemlist('git diff --name-only --cached --diff-filter=AM'), 'efm':'%f'})<cr>:copen<cr>
-
-command! -bang -nargs=+ -complete=dir Rg call RunRgWithOpts(<q-args>)
-nnoremap <leader>sw :call InputVimEscapedStr(" words: ", "\"'")<cr>:<c-r>=HistAddAndReturn('Rg "<c-r>i" --no-ignore-vcs -F -w')<cr><cr>
-nnoremap <leader>se :call InputVimEscapedStr(" exact: ", "\"'")<cr>:<c-r>=HistAddAndReturn('Rg "<c-r>i" --no-ignore-vcs -F')<cr><cr>
-nnoremap <leader>ss :call InputVimEscapedStr("search: ", '"')<cr>:Rg "<c-r>i" --no-ignore-vcs -S <space>
-nnoremap <leader>sy /<c-r>=VimEscape(substitute(@0, '\n\+$', '', ''), ".* \\/")<cr>
-nnoremap <leader>si /<c-r>=InputVimEscapedStr("input: ", ".* \\/")<cr>
-nnoremap <leader>sb :Buffers<cr>
-nnoremap <leader>sc :let @/=""<cr>
-nnoremap <leader>sf :FZF<cr>
-nnoremap <leader>sh :History<cr>
-nnoremap <leader>st :Tags<cr>
-
-
+nnoremap <silent><leader>qf :let @i=VimEscape(InputStr("lines to leave: "), "\\$#%\"'`")<cr>:<c-r>=HistAddAndReturn('call FilterQfLocList("<c-r>i", 1)')<cr><cr>
+nnoremap <silent><leader>qe :let @i=VimEscape(InputStr("lines to exclude: "), "\\$#%\"'`")<cr>:<c-r>=HistAddAndReturn('call FilterQfLocList("<c-r>i", 0)')<cr><cr>
+nnoremap <silent><leader>qd :call setqflist([], ' ', {'lines' : systemlist('git diff --name-only --cached --diff-filter=AM'), 'efm':'%f'})<cr>:copen<cr>
 
 
 let g:which_key_map.l = { 'name' : '☰ LANGUAGE' }
@@ -286,22 +321,18 @@ let g:which_key_map.c.c.l = 'clickhouse_config'
 let g:which_key_map.c.t = 'Trim whitespaces'
 let g:which_key_map.c.R = 'Refresh buffers & regenerate local tags'
 let g:which_key_map.c.T = 'Refresh outer tags'
+nnoremap <leader>cR :syntax off<CR>:let _current_buffer=bufnr("%")<CR>:bufdo execute ":e"<CR>:b <c-r>=_current_buffer<CR><CR>:GutentagsUpdate!<CR>:syntax on<CR>
 nnoremap <leader>cf :!cp '%:p' '%:p:h/.%:e'<Left><Left><Left><Left><Left>
+nnoremap <leader>cT :call GenerateSitePackageTags()<CR>
 nnoremap <silent> <leader>cp :let @0=@%<CR>:let @+=@%<CR>
 nnoremap <leader>ccr :call InputVimEscapedStr("new_env: ", '"')<cr>:tabnew<cr>:e /home/pavel/projects/braavo/aprenita/env_requisite/credentials.yml<CR>/current_env<CR>f:wv$hy/## start <C-r>"<cr><Home><C-v>/## end <C-r>"<cr><Home>I# <Esc>/current_env<cr>f:wc$<C-r>i<Esc>/## start <C-r>i<Cr><Home><C-v>/## end <C-r>i<cr><Home>lx:w<cr>:echo '<C-r>i was installed in credentials.yml'<cr>:tabclose<cr>
 nnoremap <leader>ccl :call InputVimEscapedStr("new_env: ", '"')<cr>:tabnew<cr>:e /home/pavel/projects/braavo/aprenita/env_requisite/clickhouse_config.yml<CR>/current_env<CR>f:wv$hy/## start <C-r>"<cr><Home><C-v>/## end <C-r>"<cr><Home>I# <Esc>/current_env<cr>f:wc$<C-r>i<Esc>/## start <C-r>i<Cr><Home><C-v>/## end <C-r>i<cr><Home>lx:w<cr>:echo '<C-r>i env was installed in clickhouse_config.yml'<cr>:tabclose<cr>
 nnoremap <silent> <leader>ct :%s/\s\+$//g<CR>
-nnoremap <leader>cR :syntax off<CR>:let _current_buffer=bufnr("%")<CR>:bufdo execute ":e"<CR>:b <c-r>=_current_buffer<CR><CR>:GutentagsUpdate!<CR>:syntax on<CR>
-nnoremap <leader>cT :call GenerateSitePackageTags()<CR>
 
 
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-
-" ========== Terminal ==========
-" https://github.com/junegunn/fzf.vim/issues/544
-tnoremap <expr> <Esc> (&filetype == "fzf") ? "<Esc>" : "<C-\><C-n>"
 
 " ========== GitGutter ==========
 " https://github.com/airblade/vim-gitgutter
@@ -318,7 +349,6 @@ nnoremap <leader>gu :GitGutterUndoHunk<cr>
 nnoremap <leader>gv :GitGutterPreviewHunk<cr>
 nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gm :Git mergetool<cr>
-
 " debug
 let g:which_key_map.d = {'name': '☰ DEBUG'}
 let g:which_key_map.d.a = 'add breakpoint'
